@@ -6,7 +6,9 @@
 #include "GameFramework/Character.h"
 #include "SG_BaseCharacter.generated.h"
 
+class USpringArmComponent;
 class UCameraComponent;
+
 UCLASS()
 class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
 {
@@ -29,11 +31,13 @@ public:
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    USpringArmComponent* SpringArmComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
     UCameraComponent* CameraComponent;
 
 private:
     void MoveForward(float Amount);
     void MoveRight(float Amount);
-
 
 };
