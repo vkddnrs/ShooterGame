@@ -52,18 +52,19 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::Jump);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::OnStartRunning);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ASG_BaseCharacter::OnStopRunning);
-
-
 }
 
 void ASG_BaseCharacter::MoveForward(float Amount)
 {
     IsMovingForward = Amount > 0.f;
+
+    if (Amount == 0.f) return;
     AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void ASG_BaseCharacter::MoveRight(float Amount)
 {
+    if (Amount == 0.f) return;
     AddMovementInput(GetActorRightVector(), Amount);
 }
 
@@ -93,6 +94,17 @@ void ASG_BaseCharacter::OnStopRunning()
 bool ASG_BaseCharacter::IsRunning() const
 {
     return WantsToRun && IsMovingForward && !GetVelocity().IsZero();
+}
+
+float ASG_BaseCharacter::GetMovementDirection() const
+{
+    if (GetVelocity().IsZero()) return 0.f;
+
+    const FVector VelocityNorm = GetVelocity().GetSafeNormal();
+    const float AngleBetween = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNorm)));
+    const FVector CrossProduct = FVector::CrossProduct(GetActorForwardVector(), GetVelocity());
+
+    return CrossProduct.IsZero() ? AngleBetween : AngleBetween * FMath::Sign(CrossProduct.Z);
 }
 
 
