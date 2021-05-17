@@ -13,6 +13,8 @@
 #include "HealthComponent.h"
 #include "Components/TextRenderComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(Log_SG_BaseCharacter, All, All)
+
 // Sets default values
 // подключение в конструкторе нашего кастомного SG_CharacterMovementComponent
 ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
@@ -41,7 +43,9 @@ void ASG_BaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
     check(HealthComponent);
-    check(TextRenderComponent);	
+    check(TextRenderComponent);
+
+   // OnTakeAnyDamage.AddDynamic(this, &ASG_BaseCharacter::OnTakeAnyDamageHandle);
 }
 
 // Called every frame
@@ -54,6 +58,8 @@ void ASG_BaseCharacter::Tick(float DeltaTime)
         const auto Health = HealthComponent->GetHealth();
         TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
     }
+
+    TakeDamage(0.1, FDamageEvent(), Controller, this);
 }
 
 // Called to bind functionality to input
@@ -106,6 +112,8 @@ void ASG_BaseCharacter::OnStopRunning()
     //}
 
 }
+
+
 
 bool ASG_BaseCharacter::IsRunning() const
 {

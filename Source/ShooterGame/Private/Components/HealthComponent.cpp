@@ -17,7 +17,19 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Health = MaxHealth;	
+	Health = MaxHealth;
+
+    AActor* ComponentOwner = GetOwner();
+    if(ComponentOwner)
+    {
+        ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnTakeAnyDamageHandle);
+    }
 }
 
 
+void UHealthComponent::OnTakeAnyDamageHandle(
+    AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+    Health -= Damage;
+    //UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Damage : %f"), Damage)
+}
