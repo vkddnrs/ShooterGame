@@ -2,11 +2,16 @@
 
 
 #include "SG_BaseCharacter.h"
+
+#include <string>
+
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SG_CharacterMovementComponent.h"
+#include "HealthComponent.h"
+#include "Components/TextRenderComponent.h"
 
 // Sets default values
 // подключение в конструкторе нашего кастомного SG_CharacterMovementComponent
@@ -22,7 +27,11 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
-    //CameraComponent->bUsePawnControlRotation = false;
+
+    HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+
+    TextRenderComponent = CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
+    TextRenderComponent->SetupAttachment(GetRootComponent());
 
 }
 
@@ -30,7 +39,9 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
 void ASG_BaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+    check(HealthComponent);
+    check(TextRenderComponent);	
 }
 
 // Called every frame
@@ -38,6 +49,11 @@ void ASG_BaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+    if (ensure(HealthComponent || TextRenderComponent))
+    {
+        const auto Health = HealthComponent->GetHealth();
+        TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+    }
 }
 
 // Called to bind functionality to input
