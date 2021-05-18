@@ -29,7 +29,7 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
-
+   
     HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 
     TextRenderComponent = CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
@@ -57,9 +57,7 @@ void ASG_BaseCharacter::Tick(float DeltaTime)
     {
         const auto Health = HealthComponent->GetHealth();
         TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-    }
-
-    TakeDamage(0.1, FDamageEvent(), Controller, this);
+    }    
 }
 
 // Called to bind functionality to input

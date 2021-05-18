@@ -23,6 +23,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "0.0", ClampMax = "1000.0"))
     float MaxHealth = 100.f;
 
+    UFUNCTION(BlueprintCallable)
+    bool IsDead() const { return Health <= 0.f; }
+
 private:
     float Health = 0.f;
 
