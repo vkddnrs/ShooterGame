@@ -114,8 +114,12 @@ void ASG_BaseCharacter::OnDeath()
 {
    // UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Player %s is death"), *GetName())
    PlayAnimMontage(DeathAnimMontage);
-   GetCharacterMovement()->DisableMovement();
+   //GetCharacterMovement()->DisableMovement();
    SetLifeSpan(5.f);
+   if(Controller)
+   {
+       Controller->ChangeState(NAME_Spectating);
+   }
 }
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
