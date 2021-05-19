@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDeath)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float)
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UHealthComponent : public UActorComponent
@@ -16,6 +18,9 @@ public:
 	UHealthComponent();
 
     float GetHealth() const { return Health; }
+
+    FOnDeath OnDeath; // will called if Health <= 0
+    FOnHealthChanged OnHealthChanged;
 
 protected:
 	virtual void BeginPlay() override;

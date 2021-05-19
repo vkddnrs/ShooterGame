@@ -21,7 +21,8 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	Health = MaxHealth;
-
+    OnHealthChanged.Broadcast(Health);
+    
     AActor* ComponentOwner = GetOwner();
     if (ComponentOwner)
     {
@@ -33,19 +34,13 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::OnTakeAnyDamageHandle(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-    Health -= Damage;
-    UE_LOG(LogHealthComponent, Display, TEXT("Damage : %f"), Damage)
+    if(Damage <= 0.f || IsDead()) { return; }
 
-    if (DamageType)
+    Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+    OnHealthChanged.Broadcast(Health);
+
+    if(IsDead())
     {
-        if (DamageType->IsA<UFireDamageType>())
-        {
-            UE_LOG(LogHealthComponent, Display, TEXT("So hooooooooot!!!!!!"))
-        }
-        else if (DamageType->IsA<UIceDamageType>())
-        {
-            UE_LOG(LogHealthComponent, Display, TEXT("So coooold!!!!!!!"))
-        }
+        OnDeath.Broadcast();
     }
-
 }

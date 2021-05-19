@@ -44,8 +44,12 @@ void ASG_BaseCharacter::BeginPlay()
 
     check(HealthComponent);
     check(TextRenderComponent);
+    check(GetCharacterMovement());
 
-   // OnTakeAnyDamage.AddDynamic(this, &ASG_BaseCharacter::OnTakeAnyDamageHandle);
+    OnHealthChangedHandle(HealthComponent->GetHealth());
+
+    HealthComponent->OnDeath.AddUObject(this, &ASG_BaseCharacter::OnDeath);
+    HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
 }
 
 // Called every frame
@@ -53,11 +57,6 @@ void ASG_BaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    if (ensure(HealthComponent || TextRenderComponent))
-    {
-        const auto Health = HealthComponent->GetHealth();
-        TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-    }    
 }
 
 // Called to bind functionality to input
@@ -111,6 +110,18 @@ void ASG_BaseCharacter::OnStopRunning()
 
 }
 
+void ASG_BaseCharacter::OnDeath()
+{
+    UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Player %s is death"), *GetName())
+}
+
+void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
+{
+    if(ensure(TextRenderComponent))
+    {
+        TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+    }
+}
 
 
 bool ASG_BaseCharacter::IsRunning() const

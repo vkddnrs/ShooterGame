@@ -51,10 +51,9 @@ private:
     void MoveRight(float Amount);
     void OnStartRunning();
     void OnStopRunning();
+    void OnDeath();
+    void OnHealthChangedHandle(float Health);
 
     bool WantsToRun = false;
     bool IsMovingForward = false;
-
-   
-
 };
