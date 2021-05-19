@@ -34,6 +34,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
     UTextRenderComponent* TextRenderComponent;
 
+    UPROPERTY(EditDefaultsOnly, Category = Animation)
+    UAnimMontage* DeathAnimMontage;
+
 	virtual void BeginPlay() override;
 
 public:	
