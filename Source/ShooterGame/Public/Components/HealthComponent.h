@@ -28,11 +28,31 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "0.0", ClampMax = "1000.0"))
     float MaxHealth = 100.f;
 
+    // Turn on / off automatic health regeneration.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal)
+    bool AutoHeal = true;
+
+    // The time intervals between increases in health points.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
+    float HealUpdateTime = 0.5f;
+
+    // Delay before starting health regeneration.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
+    float HealDelay = 3.f;
+
+    // The value of a single change in health points.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
+    float HealModifier = 5.f;
+
     UFUNCTION(BlueprintCallable)
-    bool IsDead() const { return Health <= 0.f; }
+    bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
 private:
     float Health = 0.f;
+    FTimerHandle HealTimerHandle;
+
+    void HealUpdate();
+    void SetHealth(float NewHealth);
 
     UFUNCTION()
     void OnTakeAnyDamageHandle(
