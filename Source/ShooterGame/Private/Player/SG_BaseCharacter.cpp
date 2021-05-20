@@ -50,6 +50,7 @@ void ASG_BaseCharacter::BeginPlay()
 
     HealthComponent->OnDeath.AddUObject(this, &ASG_BaseCharacter::OnDeath);
     HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
+    LandedDelegate.AddDynamic(this, &ASG_BaseCharacter::OnGroundLanded);
 }
 
 // Called every frame
@@ -148,3 +149,16 @@ float ASG_BaseCharacter::GetMovementDirection() const
 }
 
 
+void ASG_BaseCharacter::OnGroundLanded(const FHitResult& HitResult)
+{
+    const auto FallVelocityZ = abs(GetVelocity().Z);
+    UE_LOG(Log_SG_BaseCharacter, Display, TEXT("On landed FallVelocityZ: %f"), FallVelocityZ)
+
+    if(FallVelocityZ < LandedDamageVelocity.X) return;
+
+    const auto Damage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
+    TakeDamage(Damage, FDamageEvent(), nullptr, nullptr);
+
+    UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Damage: %f"), Damage)
+
+}

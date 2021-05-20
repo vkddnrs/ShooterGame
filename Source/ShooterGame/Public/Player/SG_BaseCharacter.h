@@ -37,6 +37,15 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Animation)
     UAnimMontage* DeathAnimMontage;
 
+    // The range of the speed of falling to the ground, within which
+    // we apply differential damage to the character.
+    UPROPERTY(EditDefaultsOnly, Category = Movement)
+    FVector2D LandedDamageVelocity = FVector2D(700.f, 1200.0f);
+
+    // The range of damage applied to the character when falling to the ground.
+    UPROPERTY(EditDefaultsOnly, Category = Movement)
+    FVector2D LandedDamage = FVector2D(10.f, 100.0f);
+
 	virtual void BeginPlay() override;
 
 public:	
@@ -56,6 +65,9 @@ private:
     void OnStopRunning();
     void OnDeath();
     void OnHealthChangedHandle(float Health);
+
+    UFUNCTION()
+    void OnGroundLanded(const FHitResult& HitResult);
 
     bool WantsToRun = false;
     bool IsMovingForward = false;
