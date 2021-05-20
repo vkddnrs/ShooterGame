@@ -37,13 +37,17 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Animation)
     UAnimMontage* DeathAnimMontage;
 
+    // The time after which the killed character is removed from the field.
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
+    float LifeSpanOnDeath = 5.f; 
+
     // The range of the speed of falling to the ground, within which
     // we apply differential damage to the character.
-    UPROPERTY(EditDefaultsOnly, Category = Movement)
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
     FVector2D LandedDamageVelocity = FVector2D(700.f, 1200.0f);
 
     // The range of damage applied to the character when falling to the ground.
-    UPROPERTY(EditDefaultsOnly, Category = Movement)
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
     FVector2D LandedDamage = FVector2D(10.f, 100.0f);
 
 	virtual void BeginPlay() override;

@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnDeath)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float)
+DECLARE_MULTICAST_DELEGATE(FOnDeathSignature);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UHealthComponent : public UActorComponent
@@ -15,12 +15,12 @@ class SHOOTERGAME_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UHealthComponent();
+	UHealthComponent();   
+
+    FOnDeathSignature OnDeath;  // will called if Health <= 0
+    FOnHealthChangedSignature OnHealthChanged;
 
     float GetHealth() const { return Health; }
-
-    FOnDeath OnDeath; // will called if Health <= 0
-    FOnHealthChanged OnHealthChanged;
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,7 +44,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
     float HealModifier = 5.f;
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category = Health)
     bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
 private:

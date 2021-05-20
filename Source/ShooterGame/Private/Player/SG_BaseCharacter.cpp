@@ -65,6 +65,8 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+    if(ensure(!PlayerInputComponent)) return;
+
     PlayerInputComponent->BindAxis("MoveForward", this, &ASG_BaseCharacter::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &ASG_BaseCharacter::MoveRight);
     PlayerInputComponent->BindAxis("LookUp", this, &ASG_BaseCharacter::AddControllerPitchInput);
@@ -116,7 +118,7 @@ void ASG_BaseCharacter::OnDeath()
    // UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Player %s is death"), *GetName())
    PlayAnimMontage(DeathAnimMontage);
    //GetCharacterMovement()->DisableMovement();
-   SetLifeSpan(5.f);
+   SetLifeSpan(LifeSpanOnDeath);
    if(Controller)
    {
        Controller->ChangeState(NAME_Spectating);
