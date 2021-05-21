@@ -12,6 +12,7 @@
 #include "SG_CharacterMovementComponent.h"
 #include "HealthComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Weapon/SG_BaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Log_SG_BaseCharacter, All, All)
 
@@ -51,6 +52,9 @@ void ASG_BaseCharacter::BeginPlay()
     HealthComponent->OnDeath.AddUObject(this, &ASG_BaseCharacter::OnDeath);
     HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
     LandedDelegate.AddDynamic(this, &ASG_BaseCharacter::OnGroundLanded);
+
+    SpawnWeapon();
+
 }
 
 // Called every frame
@@ -163,4 +167,17 @@ void ASG_BaseCharacter::OnGroundLanded(const FHitResult& HitResult)
 
     UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Damage: %f"), Damage)
 
+}
+
+void ASG_BaseCharacter::SpawnWeapon()
+{
+    if(!ensure(GetWorld())) return;
+
+    auto Weapon = GetWorld()->SpawnActor(WeaponClass);
+
+   if(Weapon)
+   {
+       FAttachmentTransformRules AttachmentRule = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
+       Weapon->AttachToComponent(GetMesh(), AttachmentRule, "WeaponSocket");
+   }
 }

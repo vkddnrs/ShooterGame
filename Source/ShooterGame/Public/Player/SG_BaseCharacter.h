@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UHealthComponent;
 class UTextRenderComponent;
+class ASG_BaseWeapon;
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
@@ -50,7 +51,11 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Damage)
     FVector2D LandedDamage = FVector2D(10.f, 100.0f);
 
-	virtual void BeginPlay() override;
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
+    TSubclassOf<ASG_BaseWeapon> WeaponClass;
+
+
+    virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -72,6 +77,8 @@ private:
 
     UFUNCTION()
     void OnGroundLanded(const FHitResult& HitResult);
+
+  void SpawnWeapon();
 
     bool WantsToRun = false;
     bool IsMovingForward = false;
