@@ -27,6 +27,7 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
     SpringArmComponent->SetupAttachment(GetRootComponent());
     SpringArmComponent->bUsePawnControlRotation = true;
+    SpringArmComponent->SocketOffset = FVector(0.f, 100.f, 80.f);
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
@@ -35,6 +36,7 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
 
     TextRenderComponent = CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
     TextRenderComponent->SetupAttachment(GetRootComponent());
+    TextRenderComponent->SetOwnerNoSee(true);
 
 }
 
