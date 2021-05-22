@@ -3,6 +3,8 @@
 
 #include "Weapon/SG_BaseWeapon.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All)
+
 // Sets default values
 ASG_BaseWeapon::ASG_BaseWeapon()
 {
@@ -18,6 +20,11 @@ void ASG_BaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ASG_BaseWeapon::Fire()
+{
+    UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"))
 }
 
 

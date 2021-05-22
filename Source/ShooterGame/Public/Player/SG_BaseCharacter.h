@@ -11,7 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UHealthComponent;
 class UTextRenderComponent;
-class ASG_BaseWeapon;
+class UWeaponComponent;
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
@@ -20,7 +20,7 @@ class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
 
 public:
     // для подключения в конструкторе нашего кастомного SG_CharacterMovementComponent
-	ASG_BaseCharacter(const FObjectInitializer& ObjInit); 
+	ASG_BaseCharacter(const FObjectInitializer& ObjInit);
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
@@ -31,6 +31,9 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
     UHealthComponent* HealthComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    UWeaponComponent* WeaponComponent;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
     UTextRenderComponent* TextRenderComponent;
@@ -50,10 +53,6 @@ protected:
     // The range of damage applied to the character when falling to the ground.
     UPROPERTY(EditDefaultsOnly, Category = Damage)
     FVector2D LandedDamage = FVector2D(10.f, 100.0f);
-
-    UPROPERTY(EditDefaultsOnly, Category = Weapon)
-    TSubclassOf<ASG_BaseWeapon> WeaponClass;
-
 
     virtual void BeginPlay() override;
 
@@ -77,8 +76,6 @@ private:
 
     UFUNCTION()
     void OnGroundLanded(const FHitResult& HitResult);
-
-  void SpawnWeapon();
 
     bool WantsToRun = false;
     bool IsMovingForward = false;

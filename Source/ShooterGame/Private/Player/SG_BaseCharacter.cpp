@@ -2,9 +2,6 @@
 
 
 #include "SG_BaseCharacter.h"
-
-#include <string>
-
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -13,6 +10,7 @@
 #include "HealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Weapon/SG_BaseWeapon.h"
+#include "Components/WeaponComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Log_SG_BaseCharacter, All, All)
 
@@ -38,6 +36,7 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
     TextRenderComponent->SetupAttachment(GetRootComponent());
     TextRenderComponent->SetOwnerNoSee(true);
 
+    WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 }
 
 // Called when the game starts or when spawned
@@ -55,8 +54,6 @@ void ASG_BaseCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
     LandedDelegate.AddDynamic(this, &ASG_BaseCharacter::OnGroundLanded);
 
-    SpawnWeapon();
-
 }
 
 // Called every frame
@@ -71,7 +68,8 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    if(ensure(!PlayerInputComponent)) return;
+    if(!ensure(PlayerInputComponent)) return;
+    if(!ensure(WeaponComponent)) return;
 
     PlayerInputComponent->BindAxis("MoveForward", this, &ASG_BaseCharacter::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &ASG_BaseCharacter::MoveRight);
@@ -80,6 +78,7 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::Jump);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::OnStartRunning);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ASG_BaseCharacter::OnStopRunning);
+    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::Fire);
 }
 
 void ASG_BaseCharacter::MoveForward(float Amount)
@@ -99,24 +98,11 @@ void ASG_BaseCharacter::MoveRight(float Amount)
 void ASG_BaseCharacter::OnStartRunning()
 {
     WantsToRun = true;
-
-    //if (FVector::DotProduct(GetVelocity(), GetActorForwardVector()) == 1)
-    //{
-    //    OnRunning = true;
-    //    GetCharacterMovement()->MaxWalkSpeed *= 2;
-    //}
 }
 
 void ASG_BaseCharacter::OnStopRunning()
 {
     WantsToRun = false;
-
-    //if (OnRunning)
-    //{
-    //    OnRunning = false;
-    //    GetCharacterMovement()->MaxWalkSpeed /= 2;
-    //}
-
 }
 
 void ASG_BaseCharacter::OnDeath()
@@ -171,15 +157,4 @@ void ASG_BaseCharacter::OnGroundLanded(const FHitResult& HitResult)
 
 }
 
-void ASG_BaseCharacter::SpawnWeapon()
-{
-    if(!ensure(GetWorld())) return;
 
-    auto Weapon = GetWorld()->SpawnActor(WeaponClass);
-
-   if(Weapon)
-   {
-       FAttachmentTransformRules AttachmentRule = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
-       Weapon->AttachToComponent(GetMesh(), AttachmentRule, "WeaponSocket");
-   }
-}

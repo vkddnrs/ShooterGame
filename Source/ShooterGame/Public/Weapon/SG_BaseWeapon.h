@@ -14,13 +14,12 @@ class SHOOTERGAME_API ASG_BaseWeapon : public AActor
 public:	
 	ASG_BaseWeapon();
 
+    void Fire();
+
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USkeletalMeshComponent* WeaponMesh;
 
     virtual void BeginPlay() override;
-
-public:	
-
 
 };
