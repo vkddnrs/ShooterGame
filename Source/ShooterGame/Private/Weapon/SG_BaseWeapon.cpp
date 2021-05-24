@@ -39,14 +39,10 @@ void ASG_BaseWeapon::MakeShot()
 
     if(HitResult.bBlockingHit)
     {
- //       auto Dot = FVector::DotProduct(SocketTransform.GetRotation().GetForwardVector(), -HitResult.ImpactNormal);
-
- //       UE_LOG(LogBaseWeapon, Display, TEXT("Dot: %f \nacos(Dot): %f"), Dot, acos(Dot))
- //       if(Dot > 0 && acos(Dot) < 30)
-
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.f, 0, 3.f);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::MakeRandomColor(), false, 5.f);
 
+        MakeDamage(HitResult);
 	    //UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString())
     }
 
@@ -58,9 +54,9 @@ void ASG_BaseWeapon::MakeShot()
 
 void ASG_BaseWeapon::Fire()
 {
-
     //UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"))
     MakeShot();
+
 }
 
 APlayerController* ASG_BaseWeapon::GetPlayerController() const
@@ -108,4 +104,13 @@ void ASG_BaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
     CollisionParams.AddIgnoredActor(GetOwner());
 
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
+}
+
+void ASG_BaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+    auto DamagedActor = HitResult.GetActor();
+    if(DamagedActor && DamagedActor->IsA<ACharacter>())
+    {
+         DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+    }
 }

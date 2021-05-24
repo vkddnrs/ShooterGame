@@ -11,6 +11,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Weapon/SG_BaseWeapon.h"
 #include "Components/WeaponComponent.h"
+#include "Components/CapsuleComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Log_SG_BaseCharacter, All, All)
 
@@ -115,6 +116,10 @@ void ASG_BaseCharacter::OnDeath()
    {
        Controller->ChangeState(NAME_Spectating);
    }
+    // Disabling collisions in the capsule component: there are two ways.
+    // Отключаем коллизии в компоненте капсулы: есть два способа.
+   //GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+   GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
