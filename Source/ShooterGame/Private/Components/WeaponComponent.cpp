@@ -31,6 +31,7 @@ void UWeaponComponent::SpawnWeapon()
 
     FAttachmentTransformRules AttachmentRule = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);        
     CurrentWeapon->AttachToComponent(Character->GetMesh(), AttachmentRule, WeaponAttachPointName);
+    CurrentWeapon->SetOwner(Character); // for access at Character's Camera from WeaponClass
 }
 
 void UWeaponComponent::Fire()
