@@ -116,10 +116,10 @@ void ASG_BaseCharacter::OnDeath()
    {
        Controller->ChangeState(NAME_Spectating);
    }
-    // Disabling collisions in the capsule component: there are two ways.
-    // Отключаем коллизии в компоненте капсулы: есть два способа.
-   //GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-   GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+   // Disabling collisions in the capsule component.
+   // Отключаем коллизии в компоненте капсулы
+   GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+   GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 }
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
