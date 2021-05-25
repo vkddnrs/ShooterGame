@@ -48,6 +48,8 @@ void UHealthComponent::OnTakeAnyDamageHandle(
 {
     if(!ensure(GetWorld())) return;
 
+    //UE_LOG(LogHealthComponent, Warning, TEXT("I: %s tike damage from %s"), *GetOwner()->GetName(), *DamageCauser->GetName())
+
     if(Damage <= 0.f || IsDead())  return; 
 
     // if Heal is active - we stopping him

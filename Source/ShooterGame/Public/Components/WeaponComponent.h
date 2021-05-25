@@ -16,7 +16,8 @@ class SHOOTERGAME_API UWeaponComponent : public UActorComponent
 public:	
 	UWeaponComponent();
 
-    void Fire();
+    void StartFire();
+    void StopFire();
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")

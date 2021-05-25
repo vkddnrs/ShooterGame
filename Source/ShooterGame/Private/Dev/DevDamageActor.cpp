@@ -29,7 +29,10 @@ void ADevDamageActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
     DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, 32, SphereColor);
-    UGameplayStatics::ApplyRadialDamage(this, Damage, GetActorLocation(),
-         Radius, DamageType, {}, this, nullptr, DoFullDamage);
+    if(UGameplayStatics::ApplyRadialDamage(this, Damage, GetActorLocation(),
+         Radius, DamageType, {}, this, nullptr, DoFullDamage))
+    {
+        //UE_LOG(LogTemp, Warning, TEXT("I: %s got damage to something"), *GetName())
+    }
 }
 

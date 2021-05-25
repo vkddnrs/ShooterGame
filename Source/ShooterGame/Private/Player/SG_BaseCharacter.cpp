@@ -79,7 +79,8 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::Jump);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::OnStartRunning);
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ASG_BaseCharacter::OnStopRunning);
-    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::Fire);
+    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
+    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
 }
 
 void ASG_BaseCharacter::MoveForward(float Amount)
@@ -151,7 +152,7 @@ float ASG_BaseCharacter::GetMovementDirection() const
 void ASG_BaseCharacter::OnGroundLanded(const FHitResult& HitResult)
 {
     const auto FallVelocityZ = abs(GetVelocity().Z);
-    UE_LOG(Log_SG_BaseCharacter, Display, TEXT("On landed FallVelocityZ: %f"), FallVelocityZ)
+    //UE_LOG(Log_SG_BaseCharacter, Display, TEXT("On landed FallVelocityZ: %f"), FallVelocityZ)
 
     if(FallVelocityZ < LandedDamageVelocity.X) return;
 

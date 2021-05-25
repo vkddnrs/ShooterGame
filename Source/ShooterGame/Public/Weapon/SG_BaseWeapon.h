@@ -14,7 +14,8 @@ class SHOOTERGAME_API ASG_BaseWeapon : public AActor
 public:	
 	ASG_BaseWeapon();
 
-    void Fire();
+    virtual void StartFire();
+    virtual void StopFire();
 
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
@@ -26,8 +27,15 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Setup)
     float TraceMaxDistance = 1500.f;
 
-    UPROPERTY(EditDefaultsOnly, Category = Setup)
+    UPROPERTY(EditDefaultsOnly, Category = Shot)
     float DamageAmount = 10.f;
+
+    UPROPERTY(EditDefaultsOnly, Category = Shot)
+    float TimeBetweenShots = 0.1f;
+
+    // Dispersion of shot direction.
+    UPROPERTY(EditDefaultsOnly, Category = Shot)
+    float BulletSpread = 1.5f;
 
     virtual void BeginPlay() override;
 
@@ -38,4 +46,8 @@ protected:
     bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const;
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
     void MakeDamage(const FHitResult& HitResult);
+
+private:
+    FTimerHandle ShotTimerHandle;
+
 };

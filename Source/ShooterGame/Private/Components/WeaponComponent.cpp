@@ -34,8 +34,14 @@ void UWeaponComponent::SpawnWeapon()
     CurrentWeapon->SetOwner(Character); // for access at Character's Camera from WeaponClass
 }
 
-void UWeaponComponent::Fire()
+void UWeaponComponent::StartFire()
 {
     if(!ensure(CurrentWeapon)) return;
-    CurrentWeapon->Fire();
+    CurrentWeapon->StartFire();
+}
+
+void UWeaponComponent::StopFire()
+{
+    if(!ensure(CurrentWeapon)) return;
+    CurrentWeapon->StopFire();
 }
