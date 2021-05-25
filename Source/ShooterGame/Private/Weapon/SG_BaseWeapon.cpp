@@ -4,7 +4,7 @@
 #include "Weapon/SG_BaseWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/Controller.h"
+//#include "GameFramework/Controller.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All)
 
@@ -29,42 +29,19 @@ void ASG_BaseWeapon::BeginPlay()
 
 void ASG_BaseWeapon::MakeShot()
 {
-    if(!ensure(GetWorld())) return;   
 
-    //UE_LOG(LogBaseWeapon, Display, TEXT("Fire!!!"))
-
-    FVector TraceStart, TraceEnd;
-    if(!GetTraceData(TraceStart, TraceEnd)) return;
-
-    FHitResult HitResult;
-    MakeHit(HitResult, TraceStart, TraceEnd);    
-
-    if(HitResult.bBlockingHit)
-    {
-        DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.f, 0, 3.f);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::MakeRandomColor(), false, 5.f);
-
-        MakeDamage(HitResult);
-	    //UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString())
-    }
-
-    else
-    {
-        DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
-    }
 }
 
 void ASG_BaseWeapon::StartFire()
 {
     //UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"))
-    MakeShot();
-    GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ASG_BaseWeapon::MakeShot, TimeBetweenShots, true);
+
 
 }
 
 void ASG_BaseWeapon::StopFire()
 {
-    GetWorldTimerManager().ClearTimer(ShotTimerHandle);    
+  
 }
 
 APlayerController* ASG_BaseWeapon::GetPlayerController() const
@@ -98,8 +75,7 @@ bool ASG_BaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
     if(!GetPlayerViewpoint(ViewLocation, ViewRotation)) return false;
 
     TraceStart = ViewLocation;
-    const auto HalfAngleRad = FMath::DegreesToRadians(BulletSpread);
-    const FVector ShootDirection = FMath::VRandCone(ViewRotation.Vector(), HalfAngleRad);
+    const FVector ShootDirection = ViewRotation.Vector();
     TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
 
     return true;
