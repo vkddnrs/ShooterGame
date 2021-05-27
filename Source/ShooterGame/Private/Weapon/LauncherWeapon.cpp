@@ -34,5 +34,6 @@ void ALauncherWeapon::MakeShot()
         Projectile->SetShotDirection(Direction);
         Projectile->SetLifeSpan(5.f);
         Projectile->FinishSpawning(SpawnTransform);
+        Projectile->SetOwner(GetOwner());
     }
 }
