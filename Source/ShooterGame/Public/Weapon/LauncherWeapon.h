@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class ABombshell;
+
 UCLASS()
 class SHOOTERGAME_API ALauncherWeapon : public ASG_BaseWeapon
 {
@@ -16,8 +19,10 @@ class SHOOTERGAME_API ALauncherWeapon : public ASG_BaseWeapon
 
 public:
     void StartFire() override;
-    void StopFire() override;
 
 protected:
+    UPROPERTY(EditDefaultsOnly, Category = Projectile)
+    TSubclassOf<ABombshell> ProjectileClass;	
+
     void MakeShot() override;
 };

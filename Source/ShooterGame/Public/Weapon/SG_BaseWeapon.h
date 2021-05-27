@@ -37,7 +37,10 @@ protected:
 
     APlayerController* GetPlayerController() const;
     bool GetPlayerViewpoint(FVector& ViewLocation, FRotator& ViewRotation) const;
+
+    // Point of projectile's spawn. 
     FVector GetMuzzleWorldLocation() const;
+
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
     void MakeDamage(const FHitResult& HitResult);
 
