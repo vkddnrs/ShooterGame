@@ -22,22 +22,22 @@ public:
     void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
 
 protected:
-    UPROPERTY(VisibleDefaultsOnly, Category = Collision)
+    UPROPERTY(VisibleAnywhere, Category = Components)
     USphereComponent* CollisionComponent;
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Components)
+    UPROPERTY(VisibleAnywhere, Category = Components)
     UProjectileMovementComponent* MovementComponent;
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Damage)
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
     float DamageRadius = 200.f;
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Damage)
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
     float DamageAmount = 50.f;
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Damage)
+    UPROPERTY(EditDefaultsOnly, Category = Damage)
     bool DoFullDamage = false;
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Setup)
+    UPROPERTY(EditDefaultsOnly, Category = Setup)
     float LifeSeconds = 5.f;
 
     UFUNCTION()
