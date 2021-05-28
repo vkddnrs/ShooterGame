@@ -81,6 +81,7 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ASG_BaseCharacter::OnStopRunning);
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
+    PlayerInputComponent->BindAction("NextWeapon", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::NextWeapon);
 }
 
 void ASG_BaseCharacter::MoveForward(float Amount)
@@ -121,6 +122,7 @@ void ASG_BaseCharacter::OnDeath()
    // Отключаем коллизии в компоненте капсулы
    GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
    GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+   WeaponComponent->StopFire();
 }
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health)

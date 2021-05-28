@@ -18,19 +18,32 @@ public:
 
     void StartFire();
     void StopFire();
+    void NextWeapon();
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    TSubclassOf<ASG_BaseWeapon> WeaponClass;
+    TArray<TSubclassOf<ASG_BaseWeapon>> WeaponClasses;
 
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    FName WeaponAttachPointName = "WeaponSocket";
+    FName WeaponEquipSocketName = "WeaponSocket";
+
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    FName WeaponArmourySocketName = "ArmourySocket";
 
 	virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
-    void SpawnWeapon();
+    void SpawnWeapons();
 
     UPROPERTY()
-    ASG_BaseWeapon* CurrentWeapon = nullptr;		
+    ASG_BaseWeapon* CurrentWeapon = nullptr;
+
+    UPROPERTY()
+    TArray<ASG_BaseWeapon*> Weapons;
+
+    void AttachWeaponToSocket(ASG_BaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& WeaponSocketName);
+    void EquipWeapon(int32 WeaponIndex); // устанавливает оружие в экипировку (текущее использование)    
+
+    int32 CurrentWeaponIndex = 0;
 };
