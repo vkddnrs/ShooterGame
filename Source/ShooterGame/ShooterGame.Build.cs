@@ -18,7 +18,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/Components", 
 			"ShooterGame/Public/Dev",
 			"ShooterGame/Public/Weapon",
-			"ShooterGame/Public/UI"
+			"ShooterGame/Public/UI",
+			"ShooterGame/Public/Animations"
 		}); // путь до хедеров
 
 		// Uncomment if you are using Slate UI

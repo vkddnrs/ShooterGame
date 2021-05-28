@@ -30,20 +30,27 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     FName WeaponArmourySocketName = "ArmourySocket";
 
+    UPROPERTY(EditDefaultsOnly, Category = Animations)
+    UAnimMontage* EquipAnimMontage;
+
 	virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
-    void SpawnWeapons();
-
     UPROPERTY()
     ASG_BaseWeapon* CurrentWeapon = nullptr;
 
     UPROPERTY()
     TArray<ASG_BaseWeapon*> Weapons;
 
+    ACharacter* GetCharacter();
+    void SpawnWeapons();
+    void PlayAnimMontage(UAnimMontage* Animation);
     void AttachWeaponToSocket(ASG_BaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& WeaponSocketName);
-    void EquipWeapon(int32 WeaponIndex); // устанавливает оружие в экипировку (текущее использование)    
+    void EquipWeapon(int32 WeaponIndex); // устанавливает оружие в экипировку (текущее использование)
+    void InitAnimations();
+    void OnEquipFinished(USkeletalMeshComponent* SkeletalMesh);
 
     int32 CurrentWeaponIndex = 0;
+
 };
