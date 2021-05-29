@@ -50,7 +50,10 @@ private:
     void EquipWeapon(int32 WeaponIndex); // устанавливает оружие в экипировку (текущее использование)
     void InitAnimations();
     void OnEquipFinished(USkeletalMeshComponent* SkeletalMesh);
+    bool IsCanFire() const;
+    bool IsCanEquip() const;
 
     int32 CurrentWeaponIndex = 0;
+    bool bEquipAnimInProgress = false;
 
 };

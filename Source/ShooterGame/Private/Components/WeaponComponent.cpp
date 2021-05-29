@@ -83,8 +83,9 @@ void UWeaponComponent::EquipWeapon(int32 WeaponIndex)
     // если CurrentWeapon уже существует, то его надо вернуть в положение за спиной
     if(CurrentWeapon)
     {
-        AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmourySocketName);
         CurrentWeapon->StopFire();
+        AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmourySocketName);
+        
     }
 
     CurrentWeapon = Weapons[WeaponIndex];
@@ -92,18 +93,20 @@ void UWeaponComponent::EquipWeapon(int32 WeaponIndex)
     {
         AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
         PlayAnimMontage(EquipAnimMontage);
+        bEquipAnimInProgress = true;
     }
 }
 
 void UWeaponComponent::NextWeapon()
 {
+    if(bEquipAnimInProgress) return;
     CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
     EquipWeapon(CurrentWeaponIndex);
 }
 
 void UWeaponComponent::StartFire()
 {
-    if(!ensure(CurrentWeapon)) return;
+    if(!IsCanFire()) return;
     CurrentWeapon->StartFire();
 }
 
@@ -130,7 +133,18 @@ void UWeaponComponent::InitAnimations()
 
 void UWeaponComponent::OnEquipFinished(USkeletalMeshComponent* SkeletalMesh)
 {
-    if(GetCharacter()->GetMesh() == SkeletalMesh)
-        UE_LOG(Log_WeaponComponent, Display, TEXT("Equip finished"))
+    if(GetCharacter()->GetMesh() != SkeletalMesh) return;
+  
+    UE_LOG(Log_WeaponComponent, Display, TEXT("Equip finished"))
+    bEquipAnimInProgress = false;    
+}
 
+bool UWeaponComponent::IsCanFire() const
+{
+    return !bEquipAnimInProgress && CurrentWeapon;
+}
+
+bool UWeaponComponent::IsCanEquip() const
+{
+    return !bEquipAnimInProgress;
 }
