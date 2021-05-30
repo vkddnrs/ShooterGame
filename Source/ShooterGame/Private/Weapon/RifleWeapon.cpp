@@ -17,9 +17,14 @@ void ARifleWeapon::StopFire()
 
 void ARifleWeapon::MakeShot()
 {
-    if(!ensure(GetWorld())) return;
+    //Super::MakeShot();
+    if(IsAmmoEmpty())
+    {
+        StopFire();
+        return;
+    }    
 
-    // UE_LOG(LogBaseWeapon, Display, TEXT("Fire!!!"))
+    if(!ensure(GetWorld())) return;
 
     FVector TraceStart, TraceEnd;
     if(!GetTraceData(TraceStart, TraceEnd)) return;
@@ -40,6 +45,8 @@ void ARifleWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
     }
+
+    DecreaseAmmo();
 }
 
 bool ARifleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const

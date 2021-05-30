@@ -24,24 +24,21 @@ void ASG_BaseWeapon::BeginPlay()
 	Super::BeginPlay();
 
     ensure(WeaponMesh);
-	
+
+    CurrentAmmo = DefaultsAmmo;
 }
 
 void ASG_BaseWeapon::MakeShot()
 {
-
 }
 
 void ASG_BaseWeapon::StartFire()
 {
     //UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"))
-
-
 }
 
 void ASG_BaseWeapon::StopFire()
-{
-  
+{  
 }
 
 APlayerController* ASG_BaseWeapon::GetPlayerController() const
@@ -98,4 +95,40 @@ void ASG_BaseWeapon::MakeDamage(const FHitResult& HitResult)
     {
          DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
     }
+}
+
+void ASG_BaseWeapon::DecreaseAmmo()
+{
+    CurrentAmmo.Bullets--;
+    LogAmmo();
+    if(IsClipEmpty() && !IsAmmoEmpty())
+    {
+        ChangeClip();
+    }    
+}
+
+bool ASG_BaseWeapon::IsAmmoEmpty() const
+{
+    return !CurrentAmmo.bInfinite && CurrentAmmo.Clips == 0 && IsClipEmpty();
+}
+
+bool ASG_BaseWeapon::IsClipEmpty() const
+{
+    return CurrentAmmo.Bullets == 0;
+}
+
+void ASG_BaseWeapon::ChangeClip()
+{
+    CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
+    if(!CurrentAmmo.bInfinite) CurrentAmmo.Clips--;
+    UE_LOG(LogBaseWeapon, Display, TEXT("------------ CChangeClip ------------"))
+    LogAmmo();
+}
+
+void ASG_BaseWeapon::LogAmmo()
+{
+    FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / ";
+    AmmoInfo += CurrentAmmo.bInfinite ? "Infinit" : FString::FromInt(CurrentAmmo.Clips);
+
+    UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo)
 }

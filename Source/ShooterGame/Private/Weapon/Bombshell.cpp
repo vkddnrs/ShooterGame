@@ -66,7 +66,7 @@ void ABombshell::OnProjectileHit(
            GetController(),                       //
            DoFullDamage))
     {
-        UE_LOG(Log_Bombshell, Warning, TEXT("I: %s got damage to someone"), *GetName())
+        //UE_LOG(Log_Bombshell, Warning, TEXT("I: %s got damage to someone"), *GetName())
         
     }
 

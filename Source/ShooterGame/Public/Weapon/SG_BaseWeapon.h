@@ -6,6 +6,21 @@
 #include "GameFramework/Actor.h"
 #include "SG_BaseWeapon.generated.h"
 
+USTRUCT(BlueprintType)
+struct FAmmoData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly)
+    int32 Bullets;
+
+    UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "!bInfinite"))
+    int32 Clips;
+
+    UPROPERTY(EditDefaultsOnly)
+    bool bInfinite = false;
+};
+
 UCLASS()
 class SHOOTERGAME_API ASG_BaseWeapon : public AActor
 {
@@ -30,6 +45,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Shot)
     float DamageAmount = 10.f;
 
+    UPROPERTY(EditDefaultsOnly, Category = AmmoData)
+    FAmmoData DefaultsAmmo{15, 10, false};
+
     virtual void BeginPlay() override;
 
     virtual void MakeShot();
@@ -44,6 +62,15 @@ protected:
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
     void MakeDamage(const FHitResult& HitResult);
 
+    void DecreaseAmmo();
+    bool IsAmmoEmpty() const;
+    bool IsClipEmpty() const;
+    void ChangeClip();
+    void LogAmmo();
+    
+
+private:
+    FAmmoData CurrentAmmo;
 
 
 };
