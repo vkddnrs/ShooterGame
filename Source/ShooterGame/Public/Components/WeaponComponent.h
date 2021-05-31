@@ -8,6 +8,19 @@
 
 class ASG_BaseWeapon;
 
+USTRUCT()
+struct FWeaponData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<ASG_BaseWeapon> WeaponClass;
+
+    UPROPERTY(EditDefaultsOnly)
+    UAnimMontage* ReloadAnimMontage;
+
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UWeaponComponent : public UActorComponent
 {
@@ -19,10 +32,11 @@ public:
     void StartFire();
     void StopFire();
     void NextWeapon();
+    void Reload();
 
 protected:
-    UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    TArray<TSubclassOf<ASG_BaseWeapon>> WeaponClasses;
+    UPROPERTY(EditDefaultsOnly, Category = WeaponData)
+    TArray<FWeaponData> WeaponData;
 
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     FName WeaponEquipSocketName = "WeaponSocket";
@@ -42,6 +56,9 @@ private:
 
     UPROPERTY()
     TArray<ASG_BaseWeapon*> Weapons;
+
+    UPROPERTY()
+    UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
     ACharacter* GetCharacter();
     void SpawnWeapons();

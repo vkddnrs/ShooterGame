@@ -13,7 +13,7 @@ void ALauncherWeapon::StartFire()
 
 void ALauncherWeapon::MakeShot()
 {
-    //Super::MakeShot();
+    Super::MakeShot();
 
     if(IsAmmoEmpty())
     {

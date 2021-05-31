@@ -17,7 +17,8 @@ void ARifleWeapon::StopFire()
 
 void ARifleWeapon::MakeShot()
 {
-    //Super::MakeShot();
+    Super::MakeShot();
+
     if(IsAmmoEmpty())
     {
         StopFire();
@@ -46,6 +47,7 @@ void ARifleWeapon::MakeShot()
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
     }
 
+    UE_LOG(LogTemp, Display, TEXT("MakeShot"))
     DecreaseAmmo();
 }
 
