@@ -100,11 +100,18 @@ void ASG_BaseWeapon::MakeDamage(const FHitResult& HitResult)
 
 void ASG_BaseWeapon::DecreaseAmmo()
 {
+    if(CurrentAmmo.Bullets == 0)
+    {
+        UE_LOG(LogBaseWeapon, Display, TEXT("Clip is empty"))
+        return;
+    }
+
     CurrentAmmo.Bullets--;
     LogAmmo();
     if(IsClipEmpty() && !IsAmmoEmpty())
     {
-        ChangeClip();
+        StopFire();
+        OnClipEmpty.Broadcast();
     }    
 }
 
@@ -120,10 +127,23 @@ bool ASG_BaseWeapon::IsClipEmpty() const
 
 void ASG_BaseWeapon::ChangeClip()
 {
-    CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
-    if(!CurrentAmmo.bInfinite) CurrentAmmo.Clips--;
-    UE_LOG(LogBaseWeapon, Display, TEXT("------------ CChangeClip ------------"))
-    LogAmmo();
+    if(!CurrentAmmo.bInfinite)
+    {
+        if(CurrentAmmo.Clips == 0)
+        {
+            UE_LOG(LogBaseWeapon, Display, TEXT("No more clip"))
+	        return;
+        }
+        CurrentAmmo.Clips--;
+        UE_LOG(LogBaseWeapon, Display, TEXT("------------ ChangeClip ------------"))
+        CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
+        LogAmmo();
+    }
+}
+
+bool ASG_BaseWeapon::IsCanReload() const
+{
+    return CurrentAmmo.Bullets < DefaultsAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
 
 void ASG_BaseWeapon::LogAmmo()

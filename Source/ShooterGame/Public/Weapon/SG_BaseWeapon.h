@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "SG_BaseWeapon.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+
 USTRUCT(BlueprintType)
 struct FAmmoData
 {
@@ -29,8 +31,12 @@ class SHOOTERGAME_API ASG_BaseWeapon : public AActor
 public:	
 	ASG_BaseWeapon();
 
+    FOnClipEmptySignature OnClipEmpty;
     virtual void StartFire();
     virtual void StopFire();
+
+    void ChangeClip();
+    bool IsCanReload() const;
 
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
@@ -64,8 +70,7 @@ protected:
 
     void DecreaseAmmo();
     bool IsAmmoEmpty() const;
-    bool IsClipEmpty() const;
-    void ChangeClip();
+    bool IsClipEmpty() const;    
     void LogAmmo();
     
 

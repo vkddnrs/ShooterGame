@@ -7,6 +7,7 @@
 #include "WeaponComponent.generated.h"
 
 class ASG_BaseWeapon;
+class UEquipFinishedAnimNotify;
 
 USTRUCT()
 struct FWeaponData
@@ -50,6 +51,9 @@ protected:
 	virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+    void OnClipEmpty();
+    void ChangeClip();
+
 private:
     UPROPERTY()
     ASG_BaseWeapon* CurrentWeapon = nullptr;
@@ -60,17 +64,35 @@ private:
     UPROPERTY()
     UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
-    ACharacter* GetCharacter();
+    ACharacter* GetCharacter() const;
+
+    int32 CurrentWeaponIndex = 0;
+    bool bEquipAnimInProgress = false;
+    bool bReloadAnimInProgress = false;
+
     void SpawnWeapons();
     void PlayAnimMontage(UAnimMontage* Animation);
     void AttachWeaponToSocket(ASG_BaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& WeaponSocketName);
     void EquipWeapon(int32 WeaponIndex); // устанавливает оружие в экипировку (текущее использование)
     void InitAnimations();
     void OnEquipFinished(USkeletalMeshComponent* SkeletalMesh);
+    void OnReloadFinished(USkeletalMeshComponent* SkeletalMesh);
     bool IsCanFire() const;
     bool IsCanEquip() const;
+    bool IsCanReload() const;
 
-    int32 CurrentWeaponIndex = 0;
-    bool bEquipAnimInProgress = false;
+    template<typename T>
+    T* FindNotifyByClass(const UAnimSequenceBase* Animation) const
+    {
+        if(!Animation) return nullptr;
+
+        const auto NotifyEvents = Animation->Notifies;
+        for(auto NotifyEvent : NotifyEvents)
+        {
+            auto AnimNotify = Cast<T>(NotifyEvent.Notify);
+            if(AnimNotify) return AnimNotify;
+        }
+        return nullptr;
+    }
 
 };
