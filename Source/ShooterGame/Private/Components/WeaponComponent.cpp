@@ -5,8 +5,11 @@
 #include "Weapon/SG_BaseWeapon.h"
 #include "Animations/EquipFinishedAnimNotify.h"
 #include "Animations/ReloadFinishedAnimNotify.h"
+#include "Animations/AnimUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Log_WeaponComponent, All, All)
+
+constexpr static int32 WeaponNum = 2;
 
 UWeaponComponent::UWeaponComponent()
 {
@@ -16,6 +19,8 @@ UWeaponComponent::UWeaponComponent()
 void UWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
+
+    checkf(WeaponData.Num() == WeaponNum, TEXT("Our character can hold only %i weapon items"), WeaponNum)
 
     CurrentWeaponIndex = 0;
     InitAnimations();
@@ -145,13 +150,29 @@ void UWeaponComponent::StopFire()
 
 void UWeaponComponent::InitAnimations()
 {
-    auto EquipFinishedNotify = FindNotifyByClass<UEquipFinishedAnimNotify>(EquipAnimMontage);
-    if(EquipFinishedNotify) EquipFinishedNotify->OnNotified.AddUObject(this, &UWeaponComponent::OnEquipFinished);
+    auto EquipFinishedNotify = AnimUtils::FindNotifyByClass<UEquipFinishedAnimNotify>(EquipAnimMontage);
+    if(ensure(EquipFinishedNotify))
+    {
+        EquipFinishedNotify->OnNotified.AddUObject(this, &UWeaponComponent::OnEquipFinished);
+    }
+    else
+    {
+        UE_LOG(Log_WeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"))
+        //checkNoEntry();
+    }
 
     for(auto OneWeaponData : WeaponData)
     {
-        auto ReloadFinishedNotify = FindNotifyByClass<UReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
-        if(ReloadFinishedNotify) ReloadFinishedNotify->OnNotified.AddUObject(this, &UWeaponComponent::OnReloadFinished);
+        auto ReloadFinishedNotify = AnimUtils::FindNotifyByClass<UReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+        if(ensure(ReloadFinishedNotify))
+        {
+            ReloadFinishedNotify->OnNotified.AddUObject(this, &UWeaponComponent::OnReloadFinished);
+        }
+        else
+        {
+            UE_LOG(Log_WeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"))
+            //checkNoEntry();
+        }        
     }
 }
 

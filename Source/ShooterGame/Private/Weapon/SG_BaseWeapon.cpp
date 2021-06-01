@@ -24,6 +24,13 @@ void ASG_BaseWeapon::BeginPlay()
 	Super::BeginPlay();
 
     ensure(WeaponMesh);
+    //checkf(DefaultsAmmo.Bullets > 0, TEXT("Bullets count couldn't be less or equal zero"))    
+    //checkf(DefaultsAmmo.Clips > 0, TEXT("Clips count couldn't be less or equal zero"))
+
+    if(!ensure(DefaultsAmmo.Bullets > 0))
+         UE_LOG(LogBaseWeapon, Error, TEXT("Bullets count couldn't be less or equal zero"))
+    if(!ensure(DefaultsAmmo.Clips > 0))
+         UE_LOG(LogBaseWeapon, Error, TEXT("Clips count couldn't be less or equal zero"))
 
     CurrentAmmo = DefaultsAmmo;
 }

@@ -4,24 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SGCoreTypes.h"
 #include "SG_BaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
-
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-    GENERATED_BODY()
-
-    UPROPERTY(EditDefaultsOnly)
-    int32 Bullets;
-
-    UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "!bInfinite"))
-    int32 Clips;
-
-    UPROPERTY(EditDefaultsOnly)
-    bool bInfinite = false;
-};
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseWeapon : public AActor

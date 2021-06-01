@@ -4,23 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "SGCoreTypes.h"
 #include "WeaponComponent.generated.h"
 
 class ASG_BaseWeapon;
 class UEquipFinishedAnimNotify;
-
-USTRUCT()
-struct FWeaponData
-{
-    GENERATED_BODY()
-
-    UPROPERTY(EditDefaultsOnly)
-    TSubclassOf<ASG_BaseWeapon> WeaponClass;
-
-    UPROPERTY(EditDefaultsOnly)
-    UAnimMontage* ReloadAnimMontage;
-
-};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UWeaponComponent : public UActorComponent
@@ -80,19 +68,5 @@ private:
     bool IsCanFire() const;
     bool IsCanEquip() const;
     bool IsCanReload() const;
-
-    template<typename T>
-    T* FindNotifyByClass(const UAnimSequenceBase* Animation) const
-    {
-        if(!Animation) return nullptr;
-
-        const auto NotifyEvents = Animation->Notifies;
-        for(auto NotifyEvent : NotifyEvents)
-        {
-            auto AnimNotify = Cast<T>(NotifyEvent.Notify);
-            if(AnimNotify) return AnimNotify;
-        }
-        return nullptr;
-    }
 
 };
