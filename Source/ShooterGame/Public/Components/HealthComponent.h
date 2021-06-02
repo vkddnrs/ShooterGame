@@ -20,12 +20,19 @@ public:
     FOnDeathSignature OnDeath;  // will called if Health <= 0
     FOnHealthChangedSignature OnHealthChanged;
 
+    UFUNCTION(BlueprintCallable, Category = Health)
+    bool IsDead() const { return FMath::IsNearlyZero(Health); }
+
+    UFUNCTION(BlueprintCallable, Category = Health)
+    float GetHealthPercent() const { return Health / MaxHealth; }
+
+
     float GetHealth() const { return Health; }
 
 protected:
 	virtual void BeginPlay() override;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "0.0", ClampMax = "1000.0"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "1.0", ClampMax = "1000.0"))
     float MaxHealth = 100.f;
 
     // Turn on / off automatic health regeneration.
@@ -44,8 +51,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
     float HealModifier = 5.f;
 
-    UFUNCTION(BlueprintCallable, Category = Health)
-    bool IsDead() const { return FMath::IsNearlyZero(Health); }
+
 
 private:
     float Health = 0.f;

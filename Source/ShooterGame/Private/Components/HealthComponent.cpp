@@ -9,8 +9,6 @@ DECLARE_LOG_CATEGORY_CLASS(LogHealthComponent, All, All)
 UHealthComponent::UHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-
 }
 
 
@@ -20,6 +18,7 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
     SetHealth(MaxHealth);
+    check(MaxHealth > 0)
     
     AActor* ComponentOwner = GetOwner();
     if (ComponentOwner)
