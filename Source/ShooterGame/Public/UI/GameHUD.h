@@ -17,6 +17,12 @@ class SHOOTERGAME_API AGameHUD : public AHUD
 public:
     virtual void DrawHUD() override;
 
+    protected:
+    UPROPERTY(EditDefaultsOnly, Category = UI)
+    TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
+
+    virtual void BeginPlay() override;
+
 private:
     void DrowCrossHair();
 

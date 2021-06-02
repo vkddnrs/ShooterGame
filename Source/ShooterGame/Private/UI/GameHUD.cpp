@@ -2,13 +2,27 @@
 
 
 #include "UI/GameHUD.h"
+#include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
+
 
 void AGameHUD::DrawHUD()
 {
     Super::DrawHUD();
 
     DrowCrossHair();
+}
+
+void AGameHUD::BeginPlay()
+{
+    if(ensure(PlayerHUDWidgetClass))
+    {
+        const auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
+        if(PlayerHUDWidget)
+        {
+            PlayerHUDWidget->AddToViewport();
+        }
+    }
 }
 
 void AGameHUD::DrowCrossHair()
