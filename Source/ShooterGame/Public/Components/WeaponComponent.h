@@ -23,6 +23,8 @@ public:
     void NextWeapon();
     void Reload();
 
+    bool GetWeaponUIData(FWeaponUIData& WeaponUIData) const;
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = WeaponData)
     TArray<FWeaponData> WeaponData;

@@ -136,6 +136,16 @@ void UWeaponComponent::Reload()
     ChangeClip();
 }
 
+bool UWeaponComponent::GetWeaponUIData(FWeaponUIData& WeaponUIData) const
+{
+    if(CurrentWeapon)
+    {
+        WeaponUIData = CurrentWeapon->GetWeaponUIData();
+        return true;
+    }
+    return false;
+}
+
 void UWeaponComponent::StartFire()
 {
     if(!IsCanFire()) return;

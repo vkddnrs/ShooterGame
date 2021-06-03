@@ -23,6 +23,8 @@ public:
     void ChangeClip();
     bool IsCanReload() const;
 
+    FWeaponUIData GetWeaponUIData() const { return WeaponUIData; }
+
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USkeletalMeshComponent* WeaponMesh;
@@ -38,6 +40,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = AmmoData)
     FAmmoData DefaultsAmmo{15, 10, false};
+
+    UPROPERTY(EditDefaultsOnly, Category = UI)
+    FWeaponUIData WeaponUIData;
 
     virtual void BeginPlay() override;
 

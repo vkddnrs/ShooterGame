@@ -10,11 +10,13 @@ void AGameHUD::DrawHUD()
 {
     Super::DrawHUD();
 
-    DrowCrossHair();
+    //DrowCrossHair();
 }
 
 void AGameHUD::BeginPlay()
 {
+    Super::BeginPlay();
+
     if(ensure(PlayerHUDWidgetClass))
     {
         const auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);

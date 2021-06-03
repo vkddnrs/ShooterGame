@@ -12,29 +12,45 @@ struct FAmmoData
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     int32 Bullets;
 
-    UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "!bInfinite"))
+    UPROPERTY(EditDefaultsOnly, Category = Weapon, meta = (EditCondition = "!bInfinite"))
     int32 Clips;
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     bool bInfinite = false;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FWeaponData
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     TSubclassOf<ASG_BaseWeapon> WeaponClass;
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     UAnimMontage* ReloadAnimMontage;
 };
+
+// UI
+
+USTRUCT(BlueprintType)
+struct FWeaponUIData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+    UTexture2D* MainIcon;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+    UTexture2D* CrossHairIcon;
+};
+
 
 // health
 
 DECLARE_MULTICAST_DELEGATE(FOnDeathSignature);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
+
