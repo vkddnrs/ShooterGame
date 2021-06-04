@@ -139,13 +139,14 @@ void ASG_BaseWeapon::ChangeClip()
         if(CurrentAmmo.Clips == 0)
         {
             UE_LOG(LogBaseWeapon, Display, TEXT("No more clip"))
-	        return;
+            return;
         }
         CurrentAmmo.Clips--;
         UE_LOG(LogBaseWeapon, Display, TEXT("------------ ChangeClip ------------"))
-        CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
-        LogAmmo();
     }
+
+    CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
+    LogAmmo();    
 }
 
 bool ASG_BaseWeapon::IsCanReload() const

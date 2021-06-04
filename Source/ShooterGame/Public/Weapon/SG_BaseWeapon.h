@@ -23,7 +23,8 @@ public:
     void ChangeClip();
     bool IsCanReload() const;
 
-    FWeaponUIData GetWeaponUIData() const { return WeaponUIData; }
+    FWeaponUIData GetCurrentWeaponUIData() const { return WeaponUIData; }
+    FAmmoData GetCurrentAmmoData() const { return CurrentAmmo;  }
 
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)

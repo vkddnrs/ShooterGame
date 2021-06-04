@@ -23,7 +23,8 @@ public:
     void NextWeapon();
     void Reload();
 
-    bool GetWeaponUIData(FWeaponUIData& WeaponUIData) const;
+    bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
+    bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = WeaponData)

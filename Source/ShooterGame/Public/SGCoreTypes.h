@@ -12,13 +12,13 @@ struct FAmmoData
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditDefaultsOnly, Category = Weapon)
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon)
     int32 Bullets;
 
-    UPROPERTY(EditDefaultsOnly, Category = Weapon, meta = (EditCondition = "!bInfinite"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon, meta = (EditCondition = "!bInfinite"))
     int32 Clips;
 
-    UPROPERTY(EditDefaultsOnly, Category = Weapon)
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon)
     bool bInfinite = false;
 };
 
@@ -44,7 +44,7 @@ struct FWeaponUIData
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
     UTexture2D* MainIcon;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = UI)
     UTexture2D* CrossHairIcon;
 };
 
