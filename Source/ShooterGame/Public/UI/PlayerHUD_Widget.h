@@ -8,6 +8,7 @@
 #include "PlayerHUD_Widget.generated.h"
 
 class UWeaponComponent;
+class UHealthComponent;
 /**
  * 
  */
@@ -26,7 +27,14 @@ public:
     UFUNCTION(BlueprintCallable, Category = UI)
     bool GetCurrentWeaponAmmoData(FAmmoData& WeaponAmmoData) const;
 
+    UFUNCTION(BlueprintCallable, Category = UI)
+    bool IsPlayerAlive() const;
+
+    UFUNCTION(BlueprintCallable, Category = UI)
+    bool IsPlayerSpectating() const;
+
 private:
     UWeaponComponent* GetWeaponComponent() const;
+    UHealthComponent* GetHealthComponent() const;
 	
 };
