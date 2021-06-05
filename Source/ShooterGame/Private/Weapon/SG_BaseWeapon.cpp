@@ -114,7 +114,7 @@ void ASG_BaseWeapon::DecreaseAmmo()
     }
 
     CurrentAmmo.Bullets--;
-    LogAmmo();
+    //LogAmmo();
     if(IsClipEmpty() && !IsAmmoEmpty())
     {
         StopFire();

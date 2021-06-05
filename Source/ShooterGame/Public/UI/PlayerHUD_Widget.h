@@ -7,8 +7,7 @@
 #include "SGCoreTypes.h"
 #include "PlayerHUD_Widget.generated.h"
 
-class UWeaponComponent;
-class UHealthComponent;
+
 /**
  * 
  */
@@ -32,9 +31,5 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = UI)
     bool IsPlayerSpectating() const;
-
-private:
-    UWeaponComponent* GetWeaponComponent() const;
-    UHealthComponent* GetHealthComponent() const;
 	
 };
