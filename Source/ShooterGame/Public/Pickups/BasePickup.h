@@ -20,10 +20,18 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USphereComponent* CollisionComponent;
 
+    UPROPERTY(EditAnywhere, Category = Respawn)
+    float RespawnTime = 5.f;
+
 	virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+    virtual bool GivePickupTo(APawn* PlayerPawn); 
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+private:    
+    void PickupWasTaken();
+    void Respawn();
 
 };

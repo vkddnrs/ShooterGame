@@ -13,5 +13,9 @@ UCLASS()
 class SHOOTERGAME_API AHealthPickup : public ABasePickup
 {
 	GENERATED_BODY()
+
+private:
+    virtual bool GivePickupTo(APawn* PlayerPawn) override;
+
 	
 };
