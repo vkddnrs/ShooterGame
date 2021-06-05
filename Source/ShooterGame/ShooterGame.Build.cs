@@ -19,8 +19,9 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/Dev",
 			"ShooterGame/Public/Weapon",
 			"ShooterGame/Public/UI",
-			"ShooterGame/Public/Animations"
-		}); // путь до хедеров
+			"ShooterGame/Public/Animations",
+			"ShooterGame/Public/Pickups"
+		}); // пути к хедерам
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
