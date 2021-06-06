@@ -22,6 +22,7 @@ public:
     void StopFire();
     void NextWeapon();
     void Reload();
+    bool TryToAddAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType, int32 ClipsAmount);
 
     bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
@@ -42,7 +43,7 @@ protected:
 	virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-    void OnClipEmpty();
+    void OnClipEmpty(ASG_BaseWeapon* AmmoEmptyWeapon);
     void ChangeClip();
 
 private:

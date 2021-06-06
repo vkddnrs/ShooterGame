@@ -41,9 +41,24 @@ void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 }
 
-void UWeaponComponent::OnClipEmpty()
+void UWeaponComponent::OnClipEmpty(ASG_BaseWeapon* AmmoEmptyWeapon)
 {
-    ChangeClip();
+    if(!AmmoEmptyWeapon) return;
+
+    if(AmmoEmptyWeapon == CurrentWeapon)
+    {
+        ChangeClip();
+    }
+    else
+    {
+        for(auto Weapon : Weapons)
+        {
+            if(Weapon == AmmoEmptyWeapon)
+            {
+                Weapon->ChangeClip();
+            }
+        }
+    }
 }
 
 void UWeaponComponent::ChangeClip()
@@ -134,6 +149,18 @@ void UWeaponComponent::NextWeapon()
 void UWeaponComponent::Reload()
 {
     ChangeClip();
+}
+
+bool UWeaponComponent::TryToAddAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType, int32 ClipsAmount)
+{
+    for(auto Weapon : Weapons)
+    {
+        if(Weapon->IsA(WeaponType))
+        {
+            return Weapon->TryToAddAmmo(ClipsAmount);
+        }        
+    }
+    return false;
 }
 
 bool UWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const

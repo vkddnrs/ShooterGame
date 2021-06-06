@@ -22,6 +22,7 @@ public:
 
     void ChangeClip();
     bool IsCanReload() const;
+    bool TryToAddAmmo(int32 ClipsAmount);
 
     FWeaponUIData GetCurrentWeaponUIData() const { return WeaponUIData; }
     FAmmoData GetCurrentAmmoData() const { return CurrentAmmo;  }
@@ -61,7 +62,9 @@ protected:
 
     void DecreaseAmmo();
     bool IsAmmoEmpty() const;
-    bool IsClipEmpty() const;    
+    bool IsClipEmpty() const;
+    bool IsAmmoFull() const;
+
     void LogAmmo();
     
 
