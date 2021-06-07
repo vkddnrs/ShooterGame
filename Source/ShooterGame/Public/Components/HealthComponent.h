@@ -28,6 +28,7 @@ public:
 
 
     float GetHealth() const { return Health; }
+    bool TryAddHealthAmount(float HealthAmount);
 
 protected:
 	virtual void BeginPlay() override;
@@ -59,6 +60,7 @@ private:
 
     void HealUpdate();
     void SetHealth(float NewHealth);
+    bool IsHealthFull() const;
 
     UFUNCTION()
     void OnTakeAnyDamageHandle(

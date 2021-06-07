@@ -10,21 +10,21 @@
 float UPlayerHUD_Widget::GetHealthPercent() const
 {
     const auto HealthComponent = ProjectUtils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
-    if(!ensure(HealthComponent)) return 0.0;
+    if(!HealthComponent) return 0.0;
     return HealthComponent->GetHealthPercent();
 }
 
 bool UPlayerHUD_Widget::GetCurrentWeaponUIData(FWeaponUIData& WeaponUIData) const
 {
     const auto WeaponComponent = ProjectUtils::GetPlayerComponent<UWeaponComponent>(GetOwningPlayerPawn());
-    if(!ensure(WeaponComponent)) return false;
+    if(!WeaponComponent) return false;
     return WeaponComponent->GetCurrentWeaponUIData(WeaponUIData);
 }
 
 bool UPlayerHUD_Widget::GetCurrentWeaponAmmoData(FAmmoData& WeaponAmmoData) const
 {
     const auto WeaponComponent = ProjectUtils::GetPlayerComponent<UWeaponComponent>(GetOwningPlayerPawn());
-    if(!ensure(WeaponComponent)) return false;
+    if(!WeaponComponent) return false;
     return WeaponComponent->GetCurrentWeaponAmmoData(WeaponAmmoData);
 }
 

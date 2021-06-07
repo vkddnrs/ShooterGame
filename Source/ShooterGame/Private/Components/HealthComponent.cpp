@@ -42,6 +42,11 @@ void UHealthComponent::SetHealth(float NewHealth)
     OnHealthChanged.Broadcast(Health);
 }
 
+bool UHealthComponent::IsHealthFull() const
+{
+    return FMath::IsNearlyEqual(Health, MaxHealth);
+}
+
 void UHealthComponent::OnTakeAnyDamageHandle(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
@@ -60,5 +65,12 @@ void UHealthComponent::OnTakeAnyDamageHandle(
         OnDeath.Broadcast();
     else if(Health < MaxHealth && AutoHeal && GetWorld())
         GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &UHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
-           
+}
+
+bool UHealthComponent::TryAddHealthAmount(float HealthAmount)
+{
+    if(IsHealthFull()) return false;
+
+    SetHealth(Health + HealthAmount);
+    return true;
 }
