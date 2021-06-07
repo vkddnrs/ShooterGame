@@ -33,5 +33,7 @@ public:
 private:    
     void PickupWasTaken();
     void Respawn();
+    void GetRandomRotationYaw();
+    float RotationYaw;
 
 };
