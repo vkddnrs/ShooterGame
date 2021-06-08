@@ -6,18 +6,18 @@
 #include "GameFramework/Actor.h"
 #include "Bombshell.generated.h"
 
-
 class USphereComponent;
 class UProjectileMovementComponent;
 class AController;
+class UWeaponFXComponent;
 
 UCLASS()
 class SHOOTERGAME_API ABombshell : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	ABombshell();
+    GENERATED_BODY()
+
+public:
+    ABombshell();
 
     void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
 
@@ -27,6 +27,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, Category = Components)
     UProjectileMovementComponent* MovementComponent;
+
+    UPROPERTY(VisibleAnywhere, Category = Components)
+    UWeaponFXComponent* WeaponFXComponent;
 
     UPROPERTY(EditDefaultsOnly, Category = Damage)
     float DamageRadius = 200.f;
@@ -44,11 +47,9 @@ protected:
     void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
         const FHitResult& Hit);
 
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
 private:
     AController* GetController() const;
     FVector ShotDirection;
-
-
 };

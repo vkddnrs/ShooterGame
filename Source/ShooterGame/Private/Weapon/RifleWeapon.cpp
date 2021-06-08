@@ -3,6 +3,19 @@
 
 #include "Weapon/RifleWeapon.h"
 #include "DrawDebugHelpers.h"
+#include "Weapon/Components/WeaponFXComponent.h"
+
+ARifleWeapon::ARifleWeapon()
+{
+    WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
+}
+
+void ARifleWeapon::BeginPlay()
+{
+    Super::BeginPlay();
+
+    ensure(WeaponFXComponent->GetEffect());
+}
 
 void ARifleWeapon::StartFire()
 {
@@ -17,7 +30,7 @@ void ARifleWeapon::StopFire()
 
 void ARifleWeapon::MakeShot()
 {
-    Super::MakeShot();
+    //Super::MakeShot();
 
     if(IsAmmoEmpty())
     {
@@ -35,10 +48,11 @@ void ARifleWeapon::MakeShot()
 
     if(HitResult.bBlockingHit)
     {
-        DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.f, 0, 3.f);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::MakeRandomColor(), false, 5.f);
+        //DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.f, 0, 3.f);
+        //DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::MakeRandomColor(), false, 5.f);
 
         MakeDamage(HitResult);
+        WeaponFXComponent->PlayImpactFX(HitResult);
         // UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString())
     }
 

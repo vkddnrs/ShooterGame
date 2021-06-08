@@ -8,7 +8,14 @@ public class ShooterGame : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[]
+		{ 
+		     "Core",
+		     "CoreUObject", 
+		     "Engine", 
+		     "InputCore",
+		     "Niagara"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
@@ -20,7 +27,9 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/Weapon",
 			"ShooterGame/Public/UI",
 			"ShooterGame/Public/Animations",
-			"ShooterGame/Public/Pickups"
+			"ShooterGame/Public/Pickups",
+			"ShooterGame/Public/Weapon/Components"
+			
 		}); // пути к хедерам
 
 		// Uncomment if you are using Slate UI

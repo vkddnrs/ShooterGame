@@ -9,12 +9,16 @@
 /**
  * 
  */
+
+class UWeaponFXComponent;
+
 UCLASS()
 class SHOOTERGAME_API ARifleWeapon : public ASG_BaseWeapon
 {
 	GENERATED_BODY()
 
 public:
+    ARifleWeapon();
     void StartFire() override;
     void StopFire() override;
 
@@ -26,6 +30,10 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Shot)
     float BulletSpread = 1.5f;
 
+    UPROPERTY(VisibleAnywhere, Category = VFX)
+    UWeaponFXComponent* WeaponFXComponent;
+
+    virtual void BeginPlay() override;
     void MakeShot() override;
     bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const override;
 

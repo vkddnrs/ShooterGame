@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "Weapon/Components/WeaponFXComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Log_Bombshell, All, All)
 
@@ -22,12 +23,16 @@ ABombshell::ABombshell()
     MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
     MovementComponent->InitialSpeed = 2000.f;
     MovementComponent->ProjectileGravityScale = 0.f;
+
+    WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
 }
 
 void ABombshell::BeginPlay()
 {
     Super::BeginPlay();
 
+    ensure(CollisionComponent);
+    ensure(WeaponFXComponent);
     if(ensure(MovementComponent))
     {
         MovementComponent->Velocity = ShotDirection * MovementComponent->InitialSpeed;
@@ -53,6 +58,8 @@ void ABombshell::OnProjectileHit(
     if(!ensure(GetWorld())) return;
 
     MovementComponent->StopMovementImmediately();
+
+    WeaponFXComponent->PlayImpactFX(Hit);
 
     // make radial Damage
     DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 32, FColor::Red, false, 5.f);
