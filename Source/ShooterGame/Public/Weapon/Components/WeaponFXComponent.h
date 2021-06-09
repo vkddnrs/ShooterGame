@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SGCoreTypes.h"
 #include "Components/ActorComponent.h"
 #include "WeaponFXComponent.generated.h"
 
@@ -18,12 +19,12 @@ public:
 	UWeaponFXComponent();
 
     void PlayImpactFX(const FHitResult& Hit);
-    UNiagaraSystem* GetEffect() const { return DefaultEffect; } 
+    //FImpactData GetEffect() const { return DefaultImpactData; } 
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = VFX)
-    UNiagaraSystem* DefaultEffect;
+    FImpactData DefaultImpactData;
 
     UPROPERTY(EditDefaultsOnly, Category = VFX)
-    TMap<UPhysicalMaterial*, UNiagaraSystem*> EffectsMap;
+    TMap<UPhysicalMaterial*, FImpactData> ImpactDataMap;
 };

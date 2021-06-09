@@ -3,6 +3,7 @@
 #include "SGCoreTypes.generated.h"
 
 class ASG_BaseWeapon;
+
     // weapon
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASG_BaseWeapon*)
@@ -54,3 +55,36 @@ struct FWeaponUIData
 DECLARE_MULTICAST_DELEGATE(FOnDeathSignature);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
 
+// VFX
+
+class UNiagaraSystem;
+
+USTRUCT(BlueprintType)
+struct FDecalData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    UMaterialInterface* Material;
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    FVector Size = FVector(10.f);
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    float LifeTime = 5.f;
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    float FadeOutTime = 0.7f;
+};
+
+USTRUCT(BlueprintType) struct FImpactData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    // ReSharper disable once UnrealHeaderToolParserError
+    UNiagaraSystem* NiagaraEffect;
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    FDecalData DecalData;
+};

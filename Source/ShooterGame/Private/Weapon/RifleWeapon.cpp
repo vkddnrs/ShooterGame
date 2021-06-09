@@ -14,7 +14,7 @@ void ARifleWeapon::BeginPlay()
 {
     Super::BeginPlay();
 
-    ensure(WeaponFXComponent->GetEffect());
+    //ensure(WeaponFXComponent->GetEffect());
 }
 
 void ARifleWeapon::StartFire()
