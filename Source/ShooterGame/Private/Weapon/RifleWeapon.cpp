@@ -58,7 +58,7 @@ void ARifleWeapon::MakeShot()
 
     else
     {
-        DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
+        //DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
     }
 
     //UE_LOG(LogTemp, Display, TEXT("MakeShot"))

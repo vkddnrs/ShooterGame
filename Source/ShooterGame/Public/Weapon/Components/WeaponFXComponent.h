@@ -7,6 +7,7 @@
 #include "WeaponFXComponent.generated.h"
 
 class UNiagaraSystem;
+class UPhysicalMaterial;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UWeaponFXComponent : public UActorComponent
@@ -17,12 +18,12 @@ public:
 	UWeaponFXComponent();
 
     void PlayImpactFX(const FHitResult& Hit);
-    UNiagaraSystem* GetEffect() const { return Effect; } 
+    UNiagaraSystem* GetEffect() const { return DefaultEffect; } 
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = VFX)
-    UNiagaraSystem* Effect;
+    UNiagaraSystem* DefaultEffect;
 
-
-		
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    TMap<UPhysicalMaterial*, UNiagaraSystem*> EffectsMap;
 };

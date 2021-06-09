@@ -14,7 +14,8 @@ public class ShooterGame : ModuleRules
 		     "CoreUObject", 
 		     "Engine", 
 		     "InputCore",
-		     "Niagara"
+		     "Niagara",
+		     "PhysicsCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

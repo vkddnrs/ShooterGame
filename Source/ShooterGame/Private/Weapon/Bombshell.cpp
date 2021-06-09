@@ -18,6 +18,7 @@ ABombshell::ABombshell()
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
     CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
+    CollisionComponent->bReturnMaterialOnMove = true; // for definition of FVX
     SetRootComponent(CollisionComponent);
 
     MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
