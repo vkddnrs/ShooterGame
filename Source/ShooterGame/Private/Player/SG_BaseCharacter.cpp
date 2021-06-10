@@ -48,6 +48,7 @@ void ASG_BaseCharacter::BeginPlay()
     check(HealthComponent);
     check(TextRenderComponent);
     check(GetCharacterMovement());
+    check(GetMesh());
 
     OnHealthChangedHandle(HealthComponent->GetHealth());
 
@@ -111,19 +112,22 @@ void ASG_BaseCharacter::OnStopRunning()
 
 void ASG_BaseCharacter::OnDeath()
 {
-   // UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Player %s is death"), *GetName())
-   PlayAnimMontage(DeathAnimMontage);
-   //GetCharacterMovement()->DisableMovement();
-   SetLifeSpan(LifeSpanOnDeath);
-   if(Controller)
-   {
+    // UE_LOG(Log_SG_BaseCharacter, Display, TEXT("Player %s is death"), *GetName())
+    //PlayAnimMontage(DeathAnimMontage);
+    //GetCharacterMovement()->DisableMovement();
+    SetLifeSpan(LifeSpanOnDeath);
+    if(Controller)
+    {
        Controller->ChangeState(NAME_Spectating);
-   }
-   // Disabling collisions in the capsule component.
-   // Отключаем коллизии в компоненте капсулы
-   GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-   GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-   WeaponComponent->StopFire();
+    }
+    // Disabling collisions in the capsule component.
+    // Отключаем коллизии в компоненте капсулы
+    GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+    GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+    WeaponComponent->StopFire();
+
+    GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GetMesh()->SetSimulatePhysics(true);
 }
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
