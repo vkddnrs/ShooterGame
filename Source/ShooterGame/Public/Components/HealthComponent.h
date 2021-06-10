@@ -7,7 +7,7 @@
 #include "SGCoreTypes.h"
 #include "HealthComponent.generated.h"
 
-
+//class UCameraShake;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTERGAME_API UHealthComponent : public UActorComponent
@@ -52,7 +52,8 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Heal, meta = (EditCondition = "AutoHeal"))
     float HealModifier = 5.f;
 
-
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = VFX)
+    TSubclassOf<UCameraShakeBase> CameraShake;
 
 private:
     float Health = 0.f;
@@ -61,6 +62,7 @@ private:
     void HealUpdate();
     void SetHealth(float NewHealth);
     bool IsHealthFull() const;
+    void PlayCameraShake();
 
     UFUNCTION()
     void OnTakeAnyDamageHandle(

@@ -2,7 +2,9 @@
 
 
 #include "Components/HealthComponent.h"
-#include "TimerManager.h" 
+#include "TimerManager.h"
+//#include "GameFramework/Controller.h"
+//#include "Camera/CameraShake.h"
 
 DECLARE_LOG_CATEGORY_CLASS(LogHealthComponent, All, All)
 
@@ -47,6 +49,17 @@ bool UHealthComponent::IsHealthFull() const
     return FMath::IsNearlyEqual(Health, MaxHealth);
 }
 
+void UHealthComponent::PlayCameraShake()
+{
+    if(IsDead()) return;
+
+    const auto Player = Cast<APawn>(GetOwner());
+    if(!Player) return;
+    const auto Controller = Player->GetController<APlayerController>();
+    if(!Controller || !Controller->PlayerCameraManager) return;
+    Controller->PlayerCameraManager->StartCameraShake(CameraShake);         
+}
+
 void UHealthComponent::OnTakeAnyDamageHandle(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
@@ -65,6 +78,8 @@ void UHealthComponent::OnTakeAnyDamageHandle(
         OnDeath.Broadcast();
     else if(Health < MaxHealth && AutoHeal && GetWorld())
         GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &UHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
+
+    PlayCameraShake();
 }
 
 bool UHealthComponent::TryAddHealthAmount(float HealthAmount)
