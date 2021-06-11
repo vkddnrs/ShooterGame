@@ -50,7 +50,7 @@ void ASG_BaseCharacter::BeginPlay()
     check(GetCharacterMovement());
     check(GetMesh());
 
-    OnHealthChangedHandle(HealthComponent->GetHealth());
+    OnHealthChangedHandle(HealthComponent->GetHealth(), 0.f);
 
     HealthComponent->OnDeath.AddUObject(this, &ASG_BaseCharacter::OnDeath);
     HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
@@ -130,7 +130,7 @@ void ASG_BaseCharacter::OnDeath()
     GetMesh()->SetSimulatePhysics(true);
 }
 
-void ASG_BaseCharacter::OnHealthChangedHandle(float Health)
+void ASG_BaseCharacter::OnHealthChangedHandle(float Health, float DeltaHealth)
 {
     if(ensure(TextRenderComponent))
     {

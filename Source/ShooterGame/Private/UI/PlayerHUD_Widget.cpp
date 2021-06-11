@@ -40,4 +40,22 @@ bool UPlayerHUD_Widget::IsPlayerSpectating() const
     return Controller->GetStateName() == NAME_Spectating;
 }
 
+bool UPlayerHUD_Widget::Initialize()
+{
+    const auto HealthComponent = ProjectUtils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
+    if(HealthComponent)
+    {
+        HealthComponent->OnHealthChanged.AddUObject(this, &UPlayerHUD_Widget::OnHealthChanged);
+    }
+
+    return Super::Initialize();
+}
+
+void UPlayerHUD_Widget::OnHealthChanged(float Health, float DeltaHealth)
+{
+    if(DeltaHealth > 0.f) return;
+
+    OnTakeDamage();
+}
+
 

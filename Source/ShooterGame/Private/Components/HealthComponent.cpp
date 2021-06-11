@@ -40,8 +40,11 @@ void UHealthComponent::HealUpdate()
 // Set Health and invoke Broadcast
 void UHealthComponent::SetHealth(float NewHealth)
 {
+    const auto NextHealth = FMath::Clamp<float>(NewHealth, 0.f, MaxHealth);
+    const auto DeltaHealth = NextHealth - Health;
     Health = FMath::Clamp<float>(NewHealth, 0.f, MaxHealth);
-    OnHealthChanged.Broadcast(Health);
+
+    OnHealthChanged.Broadcast(Health, DeltaHealth);
 }
 
 bool UHealthComponent::IsHealthFull() const
