@@ -53,7 +53,7 @@ bool UPlayerHUD_Widget::Initialize()
 
 void UPlayerHUD_Widget::OnHealthChanged(float Health, float DeltaHealth)
 {
-    if(DeltaHealth > 0.f) return;
+    if(DeltaHealth >= 0.f) return;
 
     OnTakeDamage();
 }

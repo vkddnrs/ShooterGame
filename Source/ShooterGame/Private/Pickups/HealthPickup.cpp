@@ -14,5 +14,4 @@ bool AHealthPickup::GivePickupTo(APawn* PlayerPawn)
     if(!HealthComponent || HealthComponent->IsDead()) return false;
 
     return HealthComponent->TryAddHealthAmount(HealthAmount);
-
 }
