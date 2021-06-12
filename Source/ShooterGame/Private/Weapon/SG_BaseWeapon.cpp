@@ -3,7 +3,10 @@
 #include "Weapon/SG_BaseWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
-//#include "GameFramework/Controller.h"
+#include "NiagaraFunctionLibrary.h"
+// #include "Engine/Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All)
 
@@ -86,7 +89,7 @@ void ASG_BaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
 
     FCollisionQueryParams CollisionParams;
     CollisionParams.AddIgnoredActor(GetOwner());
-    CollisionParams.bReturnPhysicalMaterial = true; // for definition of FVX
+    CollisionParams.bReturnPhysicalMaterial = true;  // for definition of FVX
 
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
@@ -147,7 +150,7 @@ void ASG_BaseWeapon::ChangeClip()
     }
 
     CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
-    //LogAmmo();
+    // LogAmmo();
 }
 
 bool ASG_BaseWeapon::IsCanReload() const
@@ -173,8 +176,8 @@ bool ASG_BaseWeapon::TryToAddAmmo(int32 ClipsAmount)
     {
         OnClipEmpty.Broadcast(this);
     }
-    
-    UE_LOG(LogBaseWeapon, Warning, TEXT("TryToAddAmmo CurrentAmmo.Clips : %i"), CurrentAmmo.Clips)   
+
+    UE_LOG(LogBaseWeapon, Warning, TEXT("TryToAddAmmo CurrentAmmo.Clips : %i"), CurrentAmmo.Clips)
     return true;
 }
 
@@ -184,4 +187,15 @@ void ASG_BaseWeapon::LogAmmo()
     AmmoInfo += CurrentAmmo.bInfinite ? "Infinit" : FString::FromInt(CurrentAmmo.Clips);
 
     UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo)
+}
+
+UNiagaraComponent* ASG_BaseWeapon::SpawnMuzzleFX()
+{
+    return UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFX,  //
+        WeaponMesh,                                                //
+        MuzzleSocketName,                                          //
+        FVector::ZeroVector,                                       //
+        FRotator::ZeroRotator,                                     //
+        EAttachLocation::SnapToTarget,                             //
+        true);
 }

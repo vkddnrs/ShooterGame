@@ -4,6 +4,7 @@
 #include "Weapon/RifleWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "Weapon/Components/WeaponFXComponent.h"
+#include "NiagaraComponent.h"
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -19,6 +20,7 @@ void ARifleWeapon::BeginPlay()
 
 void ARifleWeapon::StartFire()
 {
+    InitMuzzleFX();
     GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ARifleWeapon::MakeShot, TimeBetweenShots, true);
     MakeShot();
 }
@@ -26,6 +28,7 @@ void ARifleWeapon::StartFire()
 void ARifleWeapon::StopFire()
 {
     GetWorldTimerManager().ClearTimer(ShotTimerHandle);
+    SetMuzzleFXVisible(false);
 }
 
 void ARifleWeapon::MakeShot()
@@ -77,4 +80,22 @@ bool ARifleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
     TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
 
     return true;
+}
+
+void ARifleWeapon::InitMuzzleFX()
+{
+    if(!MuzzleFXComponent)
+    {
+        MuzzleFXComponent = SpawnMuzzleFX();
+    }
+    SetMuzzleFXVisible(true);
+}
+
+void ARifleWeapon::SetMuzzleFXVisible(bool Visible)
+{
+    if(!MuzzleFXComponent) return;
+
+    MuzzleFXComponent->SetPaused(!Visible);
+    MuzzleFXComponent->SetVisibility(Visible, true);
+
 }

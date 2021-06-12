@@ -29,8 +29,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/UI",
 			"ShooterGame/Public/Animations",
 			"ShooterGame/Public/Pickups",
-			"ShooterGame/Public/Weapon/Components"
-			
+			"ShooterGame/Public/Weapon/Components"			
+
 		}); // пути к хедерам
 
 		// Uncomment if you are using Slate UI

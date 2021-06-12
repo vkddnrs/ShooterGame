@@ -7,6 +7,8 @@
 #include "SGCoreTypes.h"
 #include "SG_BaseWeapon.generated.h"
 
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseWeapon : public AActor
@@ -46,6 +48,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = UI)
     FWeaponUIData WeaponUIData;
 
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    UNiagaraSystem* MuzzleFX;
+
     virtual void BeginPlay() override;
 
     virtual void MakeShot();
@@ -66,7 +71,8 @@ protected:
     bool IsAmmoFull() const;
 
     void LogAmmo();
-    
+
+    UNiagaraComponent* SpawnMuzzleFX();
 
 private:
     FAmmoData CurrentAmmo;

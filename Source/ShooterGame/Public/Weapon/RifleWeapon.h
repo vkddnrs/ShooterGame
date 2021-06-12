@@ -11,6 +11,7 @@
  */
 
 class UWeaponFXComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class SHOOTERGAME_API ARifleWeapon : public ASG_BaseWeapon
@@ -40,4 +41,11 @@ protected:
 
 private:
     FTimerHandle ShotTimerHandle;
+
+    UPROPERTY()
+    UNiagaraComponent* MuzzleFXComponent;
+
+    void InitMuzzleFX();
+    void SetMuzzleFXVisible(bool Visible);
+
 };
