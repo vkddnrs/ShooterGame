@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/Components/WeaponFXComponent.h"
 
+
 DEFINE_LOG_CATEGORY_STATIC(Log_Bombshell, All, All)
 
 ABombshell::ABombshell()
@@ -18,7 +19,7 @@ ABombshell::ABombshell()
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
     CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
-    CollisionComponent->bReturnMaterialOnMove = true; // for definition of FVX
+    CollisionComponent->bReturnMaterialOnMove = true;  // for definition of FVX
     SetRootComponent(CollisionComponent);
 
     MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
@@ -34,6 +35,7 @@ void ABombshell::BeginPlay()
 
     ensure(CollisionComponent);
     ensure(WeaponFXComponent);
+
     if(ensure(MovementComponent))
     {
         MovementComponent->Velocity = ShotDirection * MovementComponent->InitialSpeed;
@@ -43,9 +45,11 @@ void ABombshell::BeginPlay()
             UE_LOG(Log_Bombshell, Warning, TEXT("MovementComponent.ProjectileGravityScale should be 0.f amount !!!"))
 
         CollisionComponent->OnComponentHit.AddDynamic(this, &ABombshell::OnProjectileHit);
-        SetLifeSpan(LifeSeconds);
+        SetLifeSpan(LifeTime);
     }
 }
+
+
 
 AController* ABombshell::GetController() const
 {
@@ -63,7 +67,7 @@ void ABombshell::OnProjectileHit(
     WeaponFXComponent->PlayImpactFX(Hit);
 
     // make radial Damage
-    DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 32, FColor::Red, false, 5.f);
+    DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 32, FColor::Red, false, LifeTime);
     if(UGameplayStatics::ApplyRadialDamage(this,  //
            DamageAmount,                          //
            GetActorLocation(),                    //
@@ -74,9 +78,8 @@ void ABombshell::OnProjectileHit(
            GetController(),                       //
            DoFullDamage))
     {
-        //UE_LOG(Log_Bombshell, Warning, TEXT("I: %s got damage to someone"), *GetName())
-        
+        // UE_LOG(Log_Bombshell, Warning, TEXT("I: %s got damage to someone"), *GetName())
     }
 
-    Destroy();
+    OnHit();
 }

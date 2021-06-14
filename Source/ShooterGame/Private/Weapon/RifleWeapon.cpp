@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "Weapon/Components/WeaponFXComponent.h"
 #include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -49,19 +50,14 @@ void ARifleWeapon::MakeShot()
     FHitResult HitResult;
     MakeHit(HitResult, TraceStart, TraceEnd);
 
+    FVector TraceFXEnd = TraceEnd;
     if(HitResult.bBlockingHit)
     {
-        //DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.f, 0, 3.f);
-        //DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::MakeRandomColor(), false, 5.f);
+        TraceFXEnd = HitResult.ImpactPoint;
 
         MakeDamage(HitResult);
         WeaponFXComponent->PlayImpactFX(HitResult);
-        // UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString())
-    }
-
-    else
-    {
-        //DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.f, 0, 3.f);
+        SpawnTraceFX(GetMuzzleWorldLocation(), TraceFXEnd); 
     }
 
     //UE_LOG(LogTemp, Display, TEXT("MakeShot"))
@@ -98,4 +94,13 @@ void ARifleWeapon::SetMuzzleFXVisible(bool Visible)
     MuzzleFXComponent->SetPaused(!Visible);
     MuzzleFXComponent->SetVisibility(Visible, true);
 
+}
+
+void ARifleWeapon::SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd)
+{
+    const auto TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, TraceFX, TraceStart);
+    if(TraceFXComponent)
+    {
+        TraceFXComponent->SetVariableVec3(TraceTargetName, TraceEnd);
+    }
 }

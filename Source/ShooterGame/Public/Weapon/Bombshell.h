@@ -40,8 +40,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Damage)
     bool DoFullDamage = false;
 
+    // after hitting
     UPROPERTY(EditDefaultsOnly, Category = Setup)
-    float LifeSeconds = 5.f;
+    float LifeTime = 3.f;
+
+    UFUNCTION(BlueprintImplementableEvent, Category = Hit)
+    void OnHit();
 
     UFUNCTION()
     void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
@@ -52,4 +56,5 @@ protected:
 private:
     AController* GetController() const;
     FVector ShotDirection;
+
 };

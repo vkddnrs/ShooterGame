@@ -12,6 +12,7 @@
 
 class UWeaponFXComponent;
 class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class SHOOTERGAME_API ARifleWeapon : public ASG_BaseWeapon
@@ -31,6 +32,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Shot)
     float BulletSpread = 1.5f;
 
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    UNiagaraSystem* TraceFX;
+
+    UPROPERTY(EditDefaultsOnly, Category = VFX)
+    FName TraceTargetName = "TraceTarget";
+
     UPROPERTY(VisibleAnywhere, Category = VFX)
     UWeaponFXComponent* WeaponFXComponent;
 
@@ -47,5 +54,6 @@ private:
 
     void InitMuzzleFX();
     void SetMuzzleFXVisible(bool Visible);
+    void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
 
 };
