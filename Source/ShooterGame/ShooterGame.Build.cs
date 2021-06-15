@@ -29,7 +29,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/UI",
 			"ShooterGame/Public/Animations",
 			"ShooterGame/Public/Pickups",
-			"ShooterGame/Public/Weapon/Components"			
+			"ShooterGame/Public/Weapon/Components",
+			"ShooterGame/Public/AI"
 
 		}); // пути к хедерам
 
