@@ -9,13 +9,15 @@ public class ShooterGame : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[]
-		{ 
+		{
 		     "Core",
-		     "CoreUObject", 
-		     "Engine", 
+		     "CoreUObject",
+		     "Engine",
 		     "InputCore",
 		     "Niagara",
-		     "PhysicsCore"
+		     "PhysicsCore",
+		     "GameplayTasks",
+		     "NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
@@ -30,7 +32,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/Animations",
 			"ShooterGame/Public/Pickups",
 			"ShooterGame/Public/Weapon/Components",
-			"ShooterGame/Public/AI"
+			"ShooterGame/Public/AI",
+			"ShooterGame/Public/AI/Tasks"
 
 		}); // пути к хедерам
 
