@@ -20,4 +20,7 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = AI)
     UBehaviorTree* BehaviorTreeAsset;
+
+protected:
+    virtual void BeginPlay() override;
 };

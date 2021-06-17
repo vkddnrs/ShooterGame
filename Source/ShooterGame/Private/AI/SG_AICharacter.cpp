@@ -5,7 +5,9 @@
 #include "AI/SG_AIController.h"
 #include "SG_CharacterMovementComponent.h"
 
-ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
+
+ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit)
+     : Super(ObjInit)
 {
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     AIControllerClass = ASG_AIController::StaticClass();
@@ -19,4 +21,10 @@ ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit) : Super(ObjI
         GetCharacterMovement()->RotationRate = FRotator(0.f, 200.f, 0.f);
     }
     //********************
+}
+
+void ASG_AICharacter::BeginPlay()
+{
+    Super :: BeginPlay();
+//    ensure(BehaviorTreeAsset);
 }
