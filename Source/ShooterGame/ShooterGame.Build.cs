@@ -33,7 +33,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/Pickups",
 			"ShooterGame/Public/Weapon/Components",
 			"ShooterGame/Public/AI",
-			"ShooterGame/Public/AI/Tasks"
+			"ShooterGame/Public/AI/Tasks",
+			"ShooterGame/Public/AI/Services"
 
 		}); // пути к хедерам
 

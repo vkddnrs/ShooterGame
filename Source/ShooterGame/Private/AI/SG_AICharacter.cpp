@@ -26,5 +26,5 @@ ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit)
 void ASG_AICharacter::BeginPlay()
 {
     Super :: BeginPlay();
-//    ensure(BehaviorTreeAsset);
+
 }

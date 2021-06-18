@@ -4,6 +4,7 @@
 #include "AI/SG_AIController.h"
 #include "SG_AICharacter.h"
 #include "Components/SG_AIPerceptionComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 ASG_AIController::ASG_AIController()
 {
@@ -15,10 +16,9 @@ void ASG_AIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
 
-    static auto SG_AICharacter = Cast<ASG_AICharacter>(InPawn);
-    if(SG_AICharacter)
+    if(const auto SG_AICharacter = Cast<ASG_AICharacter>(InPawn))
     {
-        //RunBehaviorTree(SG_AICharacter->BehaviorTreeAsset);
+        RunBehaviorTree(SG_AICharacter->BehaviorTreeAsset);
     }
 }
 
@@ -26,6 +26,12 @@ void ASG_AIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
-    const auto AimActor = Cast<USG_AIPerceptionComponent>(PerceptionComponent)->GetClosestEnemy();
+    const auto AimActor = GetFocusOnActor();
     SetFocus(AimActor);
+}
+
+AActor* ASG_AIController::GetFocusOnActor() const
+{
+    if(!GetBlackboardComponent()) return nullptr;
+    return Cast<AActor>( GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
 }
