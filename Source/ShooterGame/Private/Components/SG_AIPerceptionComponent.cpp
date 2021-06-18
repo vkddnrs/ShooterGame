@@ -26,7 +26,7 @@ AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
     for (const auto CurrActor : PercieveActors)
     {
         const auto HealthComponent = CurrActor->FindComponentByClass<UHealthComponent>();
-        if(!HealthComponent && HealthComponent->IsDead()) continue; // TODO check if enemies or not
+        if(!HealthComponent || HealthComponent->IsDead()) continue; // TODO check if enemies or not
 
         const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
         if(CurrentDistance < ClosestDistance)

@@ -56,10 +56,19 @@ APlayerController* ASG_BaseWeapon::GetPlayerController() const
 
 bool ASG_BaseWeapon::GetPlayerViewpoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-    const APlayerController* Controller = GetPlayerController();
-    if(!ensure(Controller)) return false;
+    const auto Character = Cast<APawn>( GetOwner());
+    if(!Character) return false;
 
-    GetPlayerController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    if(Character->IsPlayerControlled())
+    {
+        const APlayerController* Controller = GetPlayerController();
+        if(!ensure(Controller)) return false;
+
+        GetPlayerController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    }
+
+    ViewLocation = GetMuzzleWorldLocation();
+    ViewRotation = WeaponMesh->GetSocketRotation(MuzzleSocketName);
     return true;
 }
 
