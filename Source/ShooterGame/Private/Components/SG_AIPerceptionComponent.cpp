@@ -3,9 +3,9 @@
 
 #include "Components/SG_AIPerceptionComponent.h"
 #include "AIController.h"
-#include "ProjectUtils.h"
 #include "Components/HealthComponent.h"
 #include "Perception/AISense_Sight.h"
+//#include "ProjectUtils.h"
 
 
 AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
@@ -14,7 +14,10 @@ AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
     GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PercieveActors);
     if(PercieveActors.Num() == 0) return nullptr;
 
-    const auto Pawn = Cast<AAIController>(GetOwner());
+    const auto Controller = Cast<AAIController>(GetOwner());
+    if(!Controller) return nullptr;
+
+    const auto Pawn = Controller->GetPawn();
     if(!Pawn) return nullptr;
 
     float ClosestDistance = MAX_FLT;
@@ -25,7 +28,7 @@ AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
         const auto HealthComponent = CurrActor->FindComponentByClass<UHealthComponent>();
         if(!HealthComponent && HealthComponent->IsDead()) continue; // TODO check if enemies or not
 
-        const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->K2_GetActorLocation()).Size();
+        const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
         if(CurrentDistance < ClosestDistance)
         {
             ClosestDistance = CurrentDistance;
