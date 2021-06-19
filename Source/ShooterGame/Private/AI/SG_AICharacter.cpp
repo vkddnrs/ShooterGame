@@ -4,10 +4,11 @@
 #include "AI/SG_AICharacter.h"
 #include "AI/SG_AIController.h"
 #include "SG_CharacterMovementComponent.h"
+#include "AI_WeaponComponent.h"
 
 
 ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit)
-     : Super(ObjInit)
+    : Super(ObjInit.SetDefaultSubobjectClass<UAI_WeaponComponent>("WeaponComponent"))
 {
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     AIControllerClass = ASG_AIController::StaticClass();
