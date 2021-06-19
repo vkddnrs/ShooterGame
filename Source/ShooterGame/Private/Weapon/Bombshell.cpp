@@ -68,18 +68,15 @@ void ABombshell::OnProjectileHit(
 
     // make radial Damage
     //DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 32, FColor::Red, false, LifeTime);
-    //if(UGameplayStatics::ApplyRadialDamage(this,  //
-    //       DamageAmount,                          //
-    //       GetActorLocation(),                    //
-    //       DamageRadius,                          //
-    //       UDamageType::StaticClass(),            //
-    //       {GetOwner()},                          //
-    //       this,                                  //
-    //       GetController(),                       //
-    //       DoFullDamage))
-    //{
-    //    // UE_LOG(Log_Bombshell, Warning, TEXT("I: %s got damage to someone"), *GetName())
-    //}
+    UGameplayStatics::ApplyRadialDamage(this,  //
+        DamageAmount,                          //
+        GetActorLocation(),                    //
+        DamageRadius,                          //
+        UDamageType::StaticClass(),            //
+        {GetOwner()},                          //
+        this,                                  //
+        GetController(),                       //
+        DoFullDamage); 
 
     OnHit();
 }
