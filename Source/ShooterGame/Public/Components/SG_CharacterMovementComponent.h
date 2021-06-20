@@ -17,7 +17,7 @@ class SHOOTERGAME_API USG_CharacterMovementComponent : public UCharacterMovement
 public:
     virtual float GetMaxSpeed() const override;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Movement, meta = (ClampMin = "1.5", ClampMax = "10.0"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Movement, meta = (ClampMin = "1.0", ClampMax = "10.0"))
     float RunModefier = 2.f;
 	
 };
