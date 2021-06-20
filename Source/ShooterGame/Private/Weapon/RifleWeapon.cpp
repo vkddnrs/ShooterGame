@@ -56,10 +56,9 @@ void ARifleWeapon::MakeShot()
         TraceFXEnd = HitResult.ImpactPoint;
 
         MakeDamage(HitResult);
-        WeaponFXComponent->PlayImpactFX(HitResult);
-        SpawnTraceFX(GetMuzzleWorldLocation(), TraceFXEnd); 
+        WeaponFXComponent->PlayImpactFX(HitResult);        
     }
-
+    SpawnTraceFX(GetMuzzleWorldLocation(), TraceFXEnd);
     //UE_LOG(LogTemp, Display, TEXT("MakeShot"))
     DecreaseAmmo();
 }
