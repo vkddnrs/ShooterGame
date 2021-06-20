@@ -5,6 +5,7 @@
 #include "AI/SG_AIController.h"
 #include "SG_CharacterMovementComponent.h"
 #include "AI_WeaponComponent.h"
+#include "BrainComponent.h"
 
 
 ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit)
@@ -28,4 +29,15 @@ void ASG_AICharacter::BeginPlay()
 {
     Super :: BeginPlay();
 
+}
+
+void ASG_AICharacter::OnDeath()
+{
+    Super::OnDeath();
+
+    const auto AIController = Cast<AAIController>(Controller);
+    if(AIController && AIController->BrainComponent)
+    {
+        AIController->BrainComponent->Cleanup(); // stop BehaviorTree
+    }
 }
