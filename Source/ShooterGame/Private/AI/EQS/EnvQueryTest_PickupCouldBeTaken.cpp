@@ -14,19 +14,17 @@ UEnvQueryTest_PickupCouldBeTaken::UEnvQueryTest_PickupCouldBeTaken(const FObject
 
 void UEnvQueryTest_PickupCouldBeTaken::RunTest(FEnvQueryInstance& QueryInstance) const
 {
+    UObject* DataOwner = QueryInstance.Owner.Get();
+    BoolValue.BindData(DataOwner, QueryInstance.QueryID);
+    bool bWantsBeTakable = BoolValue.GetValue();
+
     for(FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
     {
         AActor* ItemActor = GetItemActor(QueryInstance, It.GetIndex());
         const auto Pickup = Cast<ABasePickup>(ItemActor);
         if(!Pickup) continue;
-     
-        if(Pickup->CouldBeTaken())
-        {
-            It.SetScore(TestPurpose, FilterType, true, true);
-        }
-        else
-        {
-            It.ForceItemState(EEnvItemStatus::Failed);
-        }
+
+        const bool bCouldBeTaken = Pickup->CouldBeTaken();
+        It.SetScore(TestPurpose, FilterType, bCouldBeTaken, bWantsBeTakable);
     }
 }
