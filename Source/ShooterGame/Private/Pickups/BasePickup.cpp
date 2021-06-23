@@ -16,8 +16,12 @@ ABasePickup::ABasePickup()
     CollisionComponent->InitSphereRadius(50.0);
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    
+}
 
+bool ABasePickup::CouldBeTaken() const
+{
+    //return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
+    return bCouldBeTakenTest;
 }
 
 // Called when the game starts or when spawned
@@ -60,7 +64,6 @@ void ABasePickup::PickupWasTaken()
     CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     GetRootComponent()->SetVisibility(false, true);
 
-    FTimerHandle RespawnTimerHandle;
     GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ABasePickup::Respawn, RespawnTime, false);
 }
 

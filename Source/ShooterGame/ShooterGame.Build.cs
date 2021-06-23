@@ -35,7 +35,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/AI",
 			"ShooterGame/Public/AI/Tasks",
 			"ShooterGame/Public/AI/Services",
-			"ShooterGame/Public/AI/EQS"
+			"ShooterGame/Public/AI/EQS",
+			"ShooterGame/Public/AI/Decorators"
 
 		}); // пути к хедерам
 

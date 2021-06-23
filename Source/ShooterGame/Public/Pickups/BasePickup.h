@@ -15,12 +15,12 @@ class SHOOTERGAME_API ABasePickup : public AActor
 	
 public:	
 	ABasePickup();
-
+   
 protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USphereComponent* CollisionComponent;
 
-    UPROPERTY(EditAnywhere, Category = Respawn)
+    UPROPERTY(EditAnywhere, Category = AI)
     float RespawnTime = 5.f;
 
 	virtual void BeginPlay() override;
@@ -29,11 +29,17 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+    bool CouldBeTaken() const;
+
+    UPROPERTY(EditAnywhere, Category = AI)
+    bool bCouldBeTakenTest = true;
 
 private:    
     void PickupWasTaken();
     void Respawn();
     void GetRandomRotationYaw();
+
     float RotationYaw;
+    FTimerHandle RespawnTimerHandle;
 
 };
