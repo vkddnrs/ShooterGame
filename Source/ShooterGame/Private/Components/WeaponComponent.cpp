@@ -163,6 +163,19 @@ bool UWeaponComponent::TryToAddAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType, int3
     return false;
 }
 
+bool UWeaponComponent::NeedAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType)
+{
+    for(auto Weapon : Weapons)
+    {
+        if(Weapon->IsA(WeaponType))
+        {
+            if(Weapon->IsAmmoEmpty()) return true;
+            return false;
+        }
+    }
+    return false;
+}
+
 bool UWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
     if(CurrentWeapon)

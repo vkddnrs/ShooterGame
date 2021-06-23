@@ -23,6 +23,7 @@ public:
     virtual void NextWeapon();
     void Reload();
     bool TryToAddAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType, int32 ClipsAmount);
+    bool NeedAmmo(TSubclassOf<ASG_BaseWeapon> WeaponType);
 
     bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
@@ -41,10 +42,10 @@ protected:
     UAnimMontage* EquipAnimMontage;
 
     UPROPERTY()
-    ASG_BaseWeapon* CurrentWeapon = nullptr;
+    TArray<ASG_BaseWeapon*> Weapons; // List of Weapons
 
     UPROPERTY()
-    TArray<ASG_BaseWeapon*> Weapons;
+    ASG_BaseWeapon* CurrentWeapon = nullptr;
 
     int32 CurrentWeaponIndex = 0;
 
