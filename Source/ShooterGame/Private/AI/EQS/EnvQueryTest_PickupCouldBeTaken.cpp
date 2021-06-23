@@ -16,7 +16,7 @@ void UEnvQueryTest_PickupCouldBeTaken::RunTest(FEnvQueryInstance& QueryInstance)
 {
     UObject* DataOwner = QueryInstance.Owner.Get();
     BoolValue.BindData(DataOwner, QueryInstance.QueryID);
-    bool bWantsBeTakable = BoolValue.GetValue();
+    const bool bWantsBeTakable = BoolValue.GetValue();
 
     for(FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
     {

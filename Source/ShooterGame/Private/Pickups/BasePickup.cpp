@@ -20,8 +20,7 @@ ABasePickup::ABasePickup()
 
 bool ABasePickup::CouldBeTaken() const
 {
-    //return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
-    return bCouldBeTakenTest;
+    return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
 }
 
 // Called when the game starts or when spawned

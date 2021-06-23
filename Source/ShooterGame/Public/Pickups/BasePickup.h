@@ -31,9 +31,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
     bool CouldBeTaken() const;
 
-    UPROPERTY(EditAnywhere, Category = AI)
-    bool bCouldBeTakenTest = true;
-
 private:    
     void PickupWasTaken();
     void Respawn();
