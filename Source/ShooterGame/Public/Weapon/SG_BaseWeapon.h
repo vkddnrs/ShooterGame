@@ -34,16 +34,16 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USkeletalMeshComponent* WeaponMesh;
 
-    UPROPERTY(EditDefaultsOnly, Category = Setup)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     FName MuzzleSocketName = "MuzzleSocket";
 
-    UPROPERTY(EditDefaultsOnly, Category = Setup)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     float TraceMaxDistance = 1500.f;
 
-    UPROPERTY(EditDefaultsOnly, Category = Shot)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     float DamageAmount = 10.f;
 
-    UPROPERTY(EditDefaultsOnly, Category = AmmoData)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     FAmmoData DefaultsAmmo{15, 10, false};
 
     UPROPERTY(EditDefaultsOnly, Category = UI)

@@ -25,11 +25,11 @@ public:
     void StopFire() override;
 
 protected:
-    UPROPERTY(EditDefaultsOnly, Category = Shot)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     float TimeBetweenShots = 0.1f;
 
     // Dispersion of shot direction.
-    UPROPERTY(EditDefaultsOnly, Category = Shot)
+    UPROPERTY(EditDefaultsOnly, Category = Weapon)
     float BulletSpread = 1.5f;
 
     UPROPERTY(EditDefaultsOnly, Category = VFX)

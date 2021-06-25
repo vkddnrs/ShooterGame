@@ -20,7 +20,7 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     USphereComponent* CollisionComponent;
 
-    UPROPERTY(EditAnywhere, Category = AI)
+    UPROPERTY(EditAnywhere, Category = Pickup)
     float RespawnTime = 5.f;
 
 	virtual void BeginPlay() override;
