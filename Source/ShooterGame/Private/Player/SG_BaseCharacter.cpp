@@ -56,6 +56,8 @@ void ASG_BaseCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
     LandedDelegate.AddDynamic(this, &ASG_BaseCharacter::OnGroundLanded);
 
+    GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+
 }
 
 // Called every frame
