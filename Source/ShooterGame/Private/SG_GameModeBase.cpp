@@ -80,6 +80,5 @@ void ASG_GameModeBase::GameTimerUpdate()
         {
             UE_LOG(LogSGGameModeBase, Display, TEXT("********************** GAME OVER ************************"))
         }
-
     }
 }

@@ -157,7 +157,7 @@ void ASG_BaseWeapon::ChangeClip()
             return;
         }
         CurrentAmmo.Clips--;
-        UE_LOG(LogBaseWeapon, Display, TEXT("------------ ChangeClip ------------"))
+        //UE_LOG(LogBaseWeapon, Display, TEXT("------------ ChangeClip ------------"))
     }
 
     CurrentAmmo.Bullets = DefaultsAmmo.Bullets;
