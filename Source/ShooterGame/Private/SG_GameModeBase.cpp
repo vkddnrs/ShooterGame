@@ -74,6 +74,7 @@ void ASG_GameModeBase::GameTimerUpdate()
         if(CurrentRound + 1 <= GameData.RoundsNum)
         {
             CurrentRound++;
+            ResetPlayers();
             StartRound();
         }
         else
@@ -81,4 +82,24 @@ void ASG_GameModeBase::GameTimerUpdate()
             UE_LOG(LogSGGameModeBase, Display, TEXT("********************** GAME OVER ************************"))
         }
     }
+}
+
+void ASG_GameModeBase::ResetPlayers()
+{
+    if(!GetWorld()) return;
+
+    for(auto It = GetWorld()->GetControllerIterator(); It; ++It)
+    {
+        ResetOnePlayer(It->Get());
+    }
+}
+
+void ASG_GameModeBase::ResetOnePlayer(AController* Controller)
+{
+    if(Controller && Controller->GetPawn())
+    {
+        Controller->GetPawn()->Reset();
+    }
+
+    RestartPlayer(Controller);
 }

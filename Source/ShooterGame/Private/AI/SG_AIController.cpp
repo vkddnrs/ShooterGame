@@ -10,6 +10,8 @@ ASG_AIController::ASG_AIController()
 {
     SG_AIPerceptionComponent = CreateDefaultSubobject<USG_AIPerceptionComponent>("SG_AIPerceptionComponent");
     SetPerceptionComponent(*SG_AIPerceptionComponent);
+
+    bWantsPlayerState = true;
 }
 
 void ASG_AIController::OnPossess(APawn* InPawn)

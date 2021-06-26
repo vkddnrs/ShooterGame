@@ -11,7 +11,7 @@
 ASG_AICharacter::ASG_AICharacter(const FObjectInitializer& ObjInit)
     : Super(ObjInit.SetDefaultSubobjectClass<UAI_WeaponComponent>("WeaponComponent"))
 {
-    AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+    AutoPossessAI = EAutoPossessAI::Disabled;
     AIControllerClass = ASG_AIController::StaticClass();
 
     // **************** установки для плавного вращения AI персонажа **************
