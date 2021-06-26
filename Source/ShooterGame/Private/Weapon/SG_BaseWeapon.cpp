@@ -118,7 +118,7 @@ void ASG_BaseWeapon::DecreaseAmmo()
 {
     if(CurrentAmmo.Bullets == 0)
     {
-        UE_LOG(LogBaseWeapon, Display, TEXT("Clip is empty"))
+        //UE_LOG(LogBaseWeapon, Display, TEXT("Clip is empty"))
         return;
     }
 
@@ -153,7 +153,7 @@ void ASG_BaseWeapon::ChangeClip()
     {
         if(CurrentAmmo.Clips == 0)
         {
-            UE_LOG(LogBaseWeapon, Display, TEXT("No more clip"))
+            //UE_LOG(LogBaseWeapon, Display, TEXT("No more clip"))
             return;
         }
         CurrentAmmo.Clips--;
@@ -188,7 +188,7 @@ bool ASG_BaseWeapon::TryToAddAmmo(int32 ClipsAmount)
         OnClipEmpty.Broadcast(this);
     }
 
-    UE_LOG(LogBaseWeapon, Warning, TEXT("TryToAddAmmo CurrentAmmo.Clips : %i"), CurrentAmmo.Clips)
+    //UE_LOG(LogBaseWeapon, Warning, TEXT("TryToAddAmmo CurrentAmmo.Clips : %i"), CurrentAmmo.Clips)
     return true;
 }
 
@@ -197,7 +197,7 @@ void ASG_BaseWeapon::LogAmmo()
     FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / ";
     AmmoInfo += CurrentAmmo.bInfinite ? "Infinit" : FString::FromInt(CurrentAmmo.Clips);
 
-    UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo)
+    //UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo)
 }
 
 UNiagaraComponent* ASG_BaseWeapon::SpawnMuzzleFX()

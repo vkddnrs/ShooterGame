@@ -240,7 +240,7 @@ void UWeaponComponent::OnEquipFinished(USkeletalMeshComponent* SkeletalMesh)
 {
     if(GetCharacter()->GetMesh() != SkeletalMesh) return;
 
-    UE_LOG(Log_WeaponComponent, Display, TEXT("Equip finished"))
+    //UE_LOG(Log_WeaponComponent, Display, TEXT("Equip finished"))
     bEquipAnimInProgress = false;
 }
 
@@ -248,7 +248,7 @@ void UWeaponComponent::OnReloadFinished(USkeletalMeshComponent* SkeletalMesh)
 {
     if(GetCharacter()->GetMesh() != SkeletalMesh) return;
 
-    UE_LOG(Log_WeaponComponent, Display, TEXT("Reload finished"))
+    //UE_LOG(Log_WeaponComponent, Display, TEXT("Reload finished"))
     bReloadAnimInProgress = false;
 }
 
