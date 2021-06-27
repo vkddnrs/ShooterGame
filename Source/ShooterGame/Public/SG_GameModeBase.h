@@ -42,4 +42,8 @@ private:
     void ResetPlayers();
     void ResetOnePlayer(AController* Controller);
 
+    void CreateTeamsfInfo(); // Distribution of players by teams.
+    FLinearColor DetermineColorByTeamID(int32 TeamID) const;
+    void SetPlayerColor(AController* Controller);
+
 };

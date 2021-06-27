@@ -101,4 +101,11 @@ USTRUCT(BlueprintType) struct FGameData
 
     UPROPERTY(EditDefaultsOnly, Category = Game, meta = (ClampMin = 3, ClampMax = 300))
     int32 RoundTime = 10; // in seconds
+
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    FLinearColor DefaultTeamColor = FLinearColor::Blue;
+
+    // Available colors for teams.
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    TArray<FLinearColor> TeamColors;
 };

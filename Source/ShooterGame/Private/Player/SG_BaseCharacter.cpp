@@ -88,6 +88,13 @@ void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Reload", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::Reload);
 }
 
+void ASG_BaseCharacter::SetPlayerColor(const FLinearColor& Color)
+{
+    const auto MaterialInstance = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+    if(!MaterialInstance) return;
+    MaterialInstance->SetVectorParameterValue(MaterialColorName, Color);
+}
+
 void ASG_BaseCharacter::MoveForward(float Amount)
 {
     IsMovingForward = Amount > 0.f;
