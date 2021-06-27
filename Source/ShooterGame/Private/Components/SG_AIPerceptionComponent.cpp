@@ -26,13 +26,17 @@ AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
     for (const auto CurrActor : PercieveActors)
     {
         const auto HealthComponent = CurrActor->FindComponentByClass<UHealthComponent>();
-        if(!HealthComponent || HealthComponent->IsDead()) continue; // TODO check if enemies or not
 
-        const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
-        if(CurrentDistance < ClosestDistance)
+        const auto PercievePawn = Cast<APawn>(CurrActor);
+    
+        if(HealthComponent && !HealthComponent->IsDead())
         {
-            ClosestDistance = CurrentDistance;
-            ClosestPawn = CurrActor;
+            const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+            if(CurrentDistance < ClosestDistance)
+            {
+                ClosestDistance = CurrentDistance;
+                ClosestPawn = CurrActor;
+            }
         }
     }
     return ClosestPawn;
