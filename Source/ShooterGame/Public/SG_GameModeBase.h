@@ -20,6 +20,9 @@ public:
     virtual void StartPlay() override;
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
+    //Called by method UHealthComponent::Killed() of killed character.
+    void Killed(AController* KillerController, AController* VictimController) const;
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = Game)
     TSubclassOf<AAIController> AIControllerClass;
@@ -46,4 +49,5 @@ private:
     FLinearColor DetermineColorByTeamID(int32 TeamID) const;
     void SetPlayerColor(AController* Controller);
 
+    void LogPlayersInfo();
 };

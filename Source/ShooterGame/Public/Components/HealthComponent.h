@@ -9,13 +9,13 @@
 
 //class UCameraShake;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTERGAME_API UHealthComponent : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	UHealthComponent();   
+public:
+    UHealthComponent();
 
     FOnDeathSignature OnDeath;  // will called if Health <= 0
     FOnHealthChangedSignature OnHealthChanged;
@@ -26,12 +26,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = Health)
     float GetHealthPercent() const { return Health / MaxHealth; }
 
-
     float GetHealth() const { return Health; }
     bool TryAddHealthAmount(float HealthAmount);
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "1.0", ClampMax = "1000.0"))
     float MaxHealth = 100.f;
@@ -67,6 +66,8 @@ private:
     UFUNCTION()
     void OnTakeAnyDamageHandle(
         AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
- 
+
+    // Calls method ASG_GameModeBase::Killed(), passing the killer and victim (self) controllers to it.
+    void Killed(AController* KillerController) const;
 
 };

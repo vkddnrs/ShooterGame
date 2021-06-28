@@ -3,6 +3,7 @@
 
 #include "Components/HealthComponent.h"
 #include "TimerManager.h"
+#include "SG_GameModeBase.h"
 //#include "GameFramework/Controller.h"
 //#include "Camera/CameraShake.h"
 
@@ -74,15 +75,34 @@ void UHealthComponent::OnTakeAnyDamageHandle(
 
     // if Heal is active - we stopping him
     if(GetWorld()->GetTimerManager().IsTimerActive(HealTimerHandle))
-         GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
+    {
+        GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
+    }
 
     SetHealth(Health - Damage);
     if(IsDead())
+    {
+        Killed(InstigatedBy); // The controller of the character that called the function OnTakeAnyDamageHandle().
         OnDeath.Broadcast();
+    }
     else if(Health < MaxHealth && AutoHeal && GetWorld())
+    {
         GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &UHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
+    }
 
     PlayCameraShake();
+}
+
+void UHealthComponent::Killed(AController* KillerController) const
+{
+    if(!GetWorld()) return;
+    const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode());
+    if(!GameMode) return;
+
+    const auto Player = Cast<APawn>(GetOwner());
+    const auto VictimController = Player ? Player->Controller : nullptr;
+
+    GameMode->Killed(KillerController, VictimController);
 }
 
 bool UHealthComponent::TryAddHealthAmount(float HealthAmount)
