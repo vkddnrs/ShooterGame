@@ -5,7 +5,7 @@
 #include "AIController.h"
 #include "Components/HealthComponent.h"
 #include "Perception/AISense_Sight.h"
-//#include "ProjectUtils.h"
+#include "ProjectUtils.h"
 
 
 AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
@@ -26,10 +26,10 @@ AActor* USG_AIPerceptionComponent::GetClosestEnemy() const
     for (const auto CurrActor : PercieveActors)
     {
         const auto HealthComponent = CurrActor->FindComponentByClass<UHealthComponent>();
-
         const auto PercievePawn = Cast<APawn>(CurrActor);
-    
-        if(HealthComponent && !HealthComponent->IsDead())
+        bool AreEnemies = PercievePawn != nullptr && ProjectUtils::AreEnemies(Controller, PercievePawn->Controller);
+
+        if(HealthComponent && !HealthComponent->IsDead() && AreEnemies)
         {
             const auto CurrentDistance = (CurrActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
             if(CurrentDistance < ClosestDistance)
