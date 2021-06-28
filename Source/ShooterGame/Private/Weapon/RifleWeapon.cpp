@@ -6,6 +6,7 @@
 #include "Weapon/Components/WeaponFXComponent.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "GameFramework/Character.h"
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -101,5 +102,20 @@ void ARifleWeapon::SpawnTraceFX(const FVector& TraceStart, const FVector& TraceE
     if(TraceFXComponent)
     {
         TraceFXComponent->SetVariableVec3(TraceTargetName, TraceEnd);
+    }
+}
+
+AController* ARifleWeapon::GetController() const
+{
+    const auto Pawn = Cast<APawn>(GetOwner());
+    return Pawn ? Pawn->GetController() : nullptr;
+}
+
+void ARifleWeapon::MakeDamage(const FHitResult& HitResult)
+{
+    auto DamagedActor = HitResult.GetActor();
+    if(DamagedActor && DamagedActor->IsA<ACharacter>())
+    {
+        DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetController(), this);
     }
 }

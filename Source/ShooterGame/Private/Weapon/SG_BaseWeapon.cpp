@@ -46,25 +46,17 @@ void ASG_BaseWeapon::StartFire()
 
 void ASG_BaseWeapon::StopFire() {}
 
-APlayerController* ASG_BaseWeapon::GetPlayerController() const
-{
-    const auto Player = Cast<ACharacter>(GetOwner());
-    if(!ensure(Player)) return nullptr;
-
-    return Player->GetController<APlayerController>();
-}
-
 bool ASG_BaseWeapon::GetPlayerViewpoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-    const auto Character = Cast<APawn>( GetOwner());
-    if(!Character) return false;
+    const auto Player = Cast<ACharacter>( GetOwner());
+    if(!Player) return false;
 
-    if(Character->IsPlayerControlled())
+    if(Player->IsPlayerControlled())
     {
-        const APlayerController* Controller = GetPlayerController();
+        const APlayerController* Controller = Player->GetController<APlayerController>();
         if(!ensure(Controller)) return false;
 
-        GetPlayerController()->GetPlayerViewPoint(ViewLocation, ViewRotation);       
+        Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);       
     }
     else
     {
@@ -105,14 +97,6 @@ void ASG_BaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
 
-void ASG_BaseWeapon::MakeDamage(const FHitResult& HitResult)
-{
-    auto DamagedActor = HitResult.GetActor();
-    if(DamagedActor && DamagedActor->IsA<ACharacter>())
-    {
-        DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-    }
-}
 
 void ASG_BaseWeapon::DecreaseAmmo()
 {
