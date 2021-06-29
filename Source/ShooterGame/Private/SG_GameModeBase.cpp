@@ -8,6 +8,7 @@
 #include "AIController.h"
 #include "SG_PlayerState.h"
 #include "Components/SG_RespawnComponent.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSGGameModeBase, All, All)
 
@@ -106,8 +107,7 @@ void ASG_GameModeBase::GameTimerUpdate()
         }
         else
         {
-            UE_LOG(LogSGGameModeBase, Display, TEXT("************* GAME OVER **************"))
-            LogPlayersInfo();
+            GameOver();
         }
     }
 }
@@ -197,5 +197,20 @@ void ASG_GameModeBase::LogPlayersInfo()
         if(!PlayerState) continue;
 
         PlayerState->LogInfo();
+    }
+}
+
+void ASG_GameModeBase::GameOver()
+{
+    UE_LOG(LogSGGameModeBase, Display, TEXT("************* GAME OVER **************"))
+    LogPlayersInfo();
+
+    for(auto Pawn : TActorRange<APawn>(GetWorld()))
+    {
+        if(Pawn)
+        {
+            Pawn->TurnOff();
+            Pawn->DisableInput(nullptr);
+        }
     }
 }
