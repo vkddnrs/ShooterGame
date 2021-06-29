@@ -6,10 +6,7 @@
 
 USG_RespawnComponent::USG_RespawnComponent()
 {
-
 	PrimaryComponentTick.bCanEverTick = false;
-
-
 }
 
 void USG_RespawnComponent::Respawn(int32 RespawnTime)
@@ -18,7 +15,11 @@ void USG_RespawnComponent::Respawn(int32 RespawnTime)
 
     RespawnCauntDown = RespawnTime;
     GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &USG_RespawnComponent::RespawnTimerUpdate, 1.f, true);
+}
 
+inline bool USG_RespawnComponent::IsRespawnInProgress() const
+{
+    return GetWorld() && GetWorld()->GetTimerManager().IsTimerActive(RespawnTimerHandle);
 }
 
 void USG_RespawnComponent::RespawnTimerUpdate()

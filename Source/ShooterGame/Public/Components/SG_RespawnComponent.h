@@ -17,12 +17,13 @@ public:
 
     // Called from ASG_GameModeBase::RespawnRequest() when owned character dies.
     // Invoke RespawnTimer.
-    void Respawn(int32 RespawnTime); 
+    void Respawn(int32 RespawnTime);
+    inline  int32 GetRespawnCauntDown() const { return RespawnCauntDown; }
+    bool IsRespawnInProgress() const;
 
 private:
     FTimerHandle RespawnTimerHandle;
     int32 RespawnCauntDown = 0;
 
     void RespawnTimerUpdate();
-
 };
