@@ -7,6 +7,7 @@
 #include "UI/GameHUD.h"
 #include "AIController.h"
 #include "SG_PlayerState.h"
+#include "Components/SG_RespawnComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSGGameModeBase, All, All)
 
@@ -41,7 +42,7 @@ UClass* ASG_GameModeBase::GetDefaultPawnClassForController_Implementation(AContr
     return Super::GetDefaultPawnClassForController_Implementation(InController);
 }
 
-void ASG_GameModeBase::Killed(AController* KillerController, AController* VictimController) const
+void ASG_GameModeBase::Killed(AController* KillerController, AController* VictimController) 
 {
     const auto KillerPlayerState = KillerController ? Cast<ASG_PlayerState>(KillerController->PlayerState) : nullptr;
     const auto VictimPlayerState = VictimController ? Cast<ASG_PlayerState>(VictimController->PlayerState) : nullptr;
@@ -55,6 +56,13 @@ void ASG_GameModeBase::Killed(AController* KillerController, AController* Victim
     {
         VictimPlayerState->AddDeath();
     }
+
+    StartRespawn(VictimController);
+}
+
+void ASG_GameModeBase::RespawnRequest(AController* Controller)
+{
+    ResetOnePlayer(Controller);
 }
 
 void ASG_GameModeBase::SpawnBots()
@@ -163,6 +171,17 @@ void ASG_GameModeBase::SetPlayerColor(AController* Controller)
     const auto PlayerState = Cast<ASG_PlayerState>(Controller->PlayerState);
     if(!PlayerState) return;
     Character->SetPlayerColor(PlayerState->GetTeamColor());
+}
+
+void ASG_GameModeBase::StartRespawn(AController* Controller)
+{
+    const bool RespawnEvalable = RoundCountDown > GameData.MinRemainRoundTimeForRespawn + GameData.RespawnTime;
+    if(!RespawnEvalable) return;
+
+    const auto RespawnComponent = Controller->FindComponentByClass <USG_RespawnComponent>();
+    if(!RespawnComponent) return;
+
+    RespawnComponent->Respawn(GameData.RespawnTime);
 }
 
 void ASG_GameModeBase::LogPlayersInfo()

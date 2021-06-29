@@ -108,4 +108,10 @@ USTRUCT(BlueprintType) struct FGameData
     // Available colors for teams.
     UPROPERTY(EditDefaultsOnly, Category = Game)
     TArray<FLinearColor> TeamColors;
+
+    UPROPERTY(EditDefaultsOnly, Category = Game, meta = (ClampMin = 3, ClampMax = 20))
+    int32 RespawnTime = 5;  // in seconds
+
+    UPROPERTY(EditDefaultsOnly, Category = Game, meta = (ClampMin = 5, ClampMax = 200))
+    int32 MinRemainRoundTimeForRespawn = 10;  // in seconds
 };

@@ -21,7 +21,9 @@ public:
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
     //Called by method UHealthComponent::Killed() of killed character.
-    void Killed(AController* KillerController, AController* VictimController) const;
+    void Killed(AController* KillerController, AController* VictimController);
+    
+    void RespawnRequest(AController* Controller); // Call the method USG_RespawnComponent::Respawn() when the character dies.
 
     inline int32 GetRoundTime() const { return GameData.RoundTime; }
     inline int32 GetRoundCountDown() const { return RoundCountDown; }
@@ -53,6 +55,8 @@ private:
     void CreateTeamsfInfo(); // Distribution of players by teams.
     FLinearColor DetermineColorByTeamID(int32 TeamID) const;
     void SetPlayerColor(AController* Controller);
+
+    void StartRespawn(AController* Controller);
 
     void LogPlayersInfo();
 };

@@ -5,9 +5,12 @@
 #include "SG_AICharacter.h"
 #include "Components/SG_AIPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/SG_RespawnComponent.h"
 
 ASG_AIController::ASG_AIController()
 {
+    RespawnComponent = CreateDefaultSubobject<USG_RespawnComponent>("RespawnComponent");
+
     SG_AIPerceptionComponent = CreateDefaultSubobject<USG_AIPerceptionComponent>("SG_AIPerceptionComponent");
     SetPerceptionComponent(*SG_AIPerceptionComponent);
 
