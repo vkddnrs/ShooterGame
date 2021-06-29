@@ -23,6 +23,11 @@ public:
     //Called by method UHealthComponent::Killed() of killed character.
     void Killed(AController* KillerController, AController* VictimController) const;
 
+    inline int32 GetRoundTime() const { return GameData.RoundTime; }
+    inline int32 GetRoundCountDown() const { return RoundCountDown; }
+    inline int32 GetTotalRoundsNum() const { return GameData.RoundsNum; }
+    inline int32 GetCurrentRoundNum() const { return CurrentRound; }
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = Game)
     TSubclassOf<AAIController> AIControllerClass;
