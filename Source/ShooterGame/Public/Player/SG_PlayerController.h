@@ -19,5 +19,5 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     class USG_RespawnComponent* RespawnComponent;
 
-	
+	virtual void OnPossess(APawn* InPawn) override;
 };

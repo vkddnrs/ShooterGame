@@ -7,6 +7,17 @@
 #include "ProjectUtils.h"
 
 
+bool UPlayerHUD_Widget::Initialize()
+{
+    if(GetOwningPlayer())
+    {
+        GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UPlayerHUD_Widget::OnNewPawn);
+        OnNewPawn(GetOwningPlayerPawn());
+    }
+
+    return Super::Initialize();
+}
+
 float UPlayerHUD_Widget::GetHealthPercent() const
 {
     const auto HealthComponent = ProjectUtils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
@@ -40,22 +51,24 @@ bool UPlayerHUD_Widget::IsPlayerSpectating() const
     return Controller->GetStateName() == NAME_Spectating;
 }
 
-bool UPlayerHUD_Widget::Initialize()
-{
-    const auto HealthComponent = ProjectUtils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
-    if(HealthComponent)
-    {
-        HealthComponent->OnHealthChanged.AddUObject(this, &UPlayerHUD_Widget::OnHealthChanged);
-    }
 
-    return Super::Initialize();
-}
 
 void UPlayerHUD_Widget::OnHealthChanged(float Health, float DeltaHealth)
 {
     if(DeltaHealth >= 0.f) return;
 
     OnTakeDamage();
+}
+
+void UPlayerHUD_Widget::OnNewPawn(APawn* NewPawn)
+{
+    const auto HealthComponent = ProjectUtils::GetPlayerComponent<UHealthComponent>(NewPawn);
+    // in case of a possible bug when this method will be called more than once
+    if(HealthComponent && !HealthComponent->OnHealthChanged.IsBoundToObject(this))
+    {
+        UE_LOG(LogTemp, Display, TEXT("OnNewPawn() is called!!!"))
+        HealthComponent->OnHealthChanged.AddUObject(this, &UPlayerHUD_Widget::OnHealthChanged);
+    }
 }
 
 
