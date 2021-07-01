@@ -2,13 +2,9 @@
 
 
 #include "SG_BaseCharacter.h"
-#include "Camera/CameraComponent.h"
-#include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "SG_CharacterMovementComponent.h"
 #include "HealthComponent.h"
-#include "Components/TextRenderComponent.h"
 #include "Weapon/SG_BaseWeapon.h"
 #include "Components/WeaponComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -23,20 +19,7 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
-    SpringArmComponent->SetupAttachment(GetRootComponent());
-    SpringArmComponent->bUsePawnControlRotation = true;
-    SpringArmComponent->SocketOffset = FVector(0.f, 100.f, 80.f);
-
-    CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-    CameraComponent->SetupAttachment(SpringArmComponent);
-   
     HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
-
-    TextRenderComponent = CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
-    TextRenderComponent->SetupAttachment(GetRootComponent());
-    TextRenderComponent->SetOwnerNoSee(true);
-
     WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 }
 
@@ -46,7 +29,6 @@ void ASG_BaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
     check(HealthComponent);
-    check(TextRenderComponent);
     check(GetCharacterMovement());
     check(GetMesh());
 
@@ -67,26 +49,7 @@ void ASG_BaseCharacter::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void ASG_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    if(!ensure(PlayerInputComponent)) return;
-    if(!ensure(WeaponComponent)) return;
-
-    PlayerInputComponent->BindAxis("MoveForward", this, &ASG_BaseCharacter::MoveForward);
-    PlayerInputComponent->BindAxis("MoveRight", this, &ASG_BaseCharacter::MoveRight);
-    PlayerInputComponent->BindAxis("LookUp", this, &ASG_BaseCharacter::AddControllerPitchInput);
-    PlayerInputComponent->BindAxis("TurnAround", this, &ASG_BaseCharacter::AddControllerYawInput);
-    PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::Jump);
-    PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ASG_BaseCharacter::OnStartRunning);
-    PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ASG_BaseCharacter::OnStopRunning);
-    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
-    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
-    PlayerInputComponent->BindAction("NextWeapon", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::NextWeapon);
-    PlayerInputComponent->BindAction("Reload", EInputEvent::IE_Pressed, WeaponComponent, &UWeaponComponent::Reload);
-}
 
 void ASG_BaseCharacter::SetPlayerColor(const FLinearColor& Color)
 {
@@ -95,29 +58,6 @@ void ASG_BaseCharacter::SetPlayerColor(const FLinearColor& Color)
     MaterialInstance->SetVectorParameterValue(MaterialColorName, Color);
 }
 
-void ASG_BaseCharacter::MoveForward(float Amount)
-{
-    IsMovingForward = Amount > 0.f;
-
-    if (Amount == 0.f) return;
-    AddMovementInput(GetActorForwardVector(), Amount);
-}
-
-void ASG_BaseCharacter::MoveRight(float Amount)
-{
-    if (Amount == 0.f) return;
-    AddMovementInput(GetActorRightVector(), Amount);
-}
-
-void ASG_BaseCharacter::OnStartRunning()
-{
-    WantsToRun = true;
-}
-
-void ASG_BaseCharacter::OnStopRunning()
-{
-    WantsToRun = false;
-}
 
 void ASG_BaseCharacter::OnDeath()
 {
@@ -125,10 +65,7 @@ void ASG_BaseCharacter::OnDeath()
     //PlayAnimMontage(DeathAnimMontage);
     GetCharacterMovement()->DisableMovement();
     SetLifeSpan(LifeSpanOnDeath);
-    if(Controller)
-    {
-       Controller->ChangeState(NAME_Spectating);
-    }
+
     // Disabling collisions in the capsule component.
     // Отключаем коллизии в компоненте капсулы
     GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
@@ -141,16 +78,13 @@ void ASG_BaseCharacter::OnDeath()
 
 void ASG_BaseCharacter::OnHealthChangedHandle(float Health, float DeltaHealth)
 {
-    if(ensure(TextRenderComponent))
-    {
-        TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-    }
+ 
 }
 
 
 bool ASG_BaseCharacter::IsRunning() const
 {
-    return WantsToRun && IsMovingForward && !GetVelocity().IsZero();
+    return false;
 }
 
 float ASG_BaseCharacter::GetMovementDirection() const
