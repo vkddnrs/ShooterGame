@@ -4,7 +4,9 @@
 #include "UI/GameHUD.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
+#include "SG_GameModeBase.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSG_GameHUD, All, All);
 
 void AGameHUD::DrawHUD()
 {
@@ -25,6 +27,16 @@ void AGameHUD::BeginPlay()
             PlayerHUDWidget->AddToViewport();
         }
     }
+
+    if(GetWorld())
+    {
+        const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode());
+        if(GameMode)
+        {
+            GameMode->OnMathStateChanged.AddUObject(this, &AGameHUD::OnMathStateChanged);
+        }
+    }
+
 }
 
 void AGameHUD::DrowCrossHair()
@@ -37,4 +49,9 @@ void AGameHUD::DrowCrossHair()
          LineColor, LineThickness);
     DrawLine(Center.Min, Center.Max - HalfLineSize, Center.Min, Center.Max + HalfLineSize,
          LineColor, LineThickness);
+}
+
+void AGameHUD::OnMathStateChanged(ESG_MathState State)
+{
+    UE_LOG(LogSG_GameHUD, Display, TEXT("MathStateChanged: %s"), *UEnum::GetValueAsString(State))
 }

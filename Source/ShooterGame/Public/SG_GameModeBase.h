@@ -17,6 +17,8 @@ class SHOOTERGAME_API ASG_GameModeBase : public AGameModeBase
 public:
     ASG_GameModeBase();
 
+    FOnMathStateChangedSignature OnMathStateChanged;
+
     virtual void StartPlay() override;
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
@@ -41,6 +43,7 @@ protected:
     FGameData GameData;
 
 private:
+    ESG_MathState MathState = ESG_MathState::WaitingToStart;
     int32 CurrentRound = 1;
     int32 RoundCountDown = 0;
     FTimerHandle GameRoundTimerHandle;
@@ -61,4 +64,5 @@ private:
     void LogPlayersInfo();
     void GameOver();
 
+    void SetMathState(ESG_MathState State);
 };

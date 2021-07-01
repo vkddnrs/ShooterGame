@@ -115,3 +115,15 @@ USTRUCT(BlueprintType) struct FGameData
     UPROPERTY(EditDefaultsOnly, Category = Game, meta = (ClampMin = 5, ClampMax = 200))
     int32 MinRemainRoundTimeForRespawn = 10;  // in seconds
 };
+
+
+UENUM(BlueprintType)
+enum class ESG_MathState : uint8
+{
+    WaitingToStart = 0,
+    InProgress,
+    Pause,
+    GameOver
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnMathStateChangedSignature, ESG_MathState);

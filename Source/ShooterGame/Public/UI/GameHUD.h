@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "SGCoreTypes.h"
 #include "GameHUD.generated.h"
 
 /**
@@ -25,6 +26,6 @@ public:
 
 private:
     void DrowCrossHair();
-
+    void OnMathStateChanged(ESG_MathState State);
 	
 };

@@ -29,6 +29,8 @@ void ASG_GameModeBase::StartPlay()
     CreateTeamsfInfo();
     CurrentRound = 1;
     StartRound();
+
+    SetMathState(ESG_MathState::InProgress);
 }
 
 UClass* ASG_GameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -213,4 +215,13 @@ void ASG_GameModeBase::GameOver()
             Pawn->DisableInput(nullptr);
         }
     }
+    SetMathState(ESG_MathState::GameOver);
+}
+
+void ASG_GameModeBase::SetMathState(ESG_MathState State)
+{
+    if(MathState == State) return;
+
+    MathState = State;
+    OnMathStateChanged.Broadcast(MathState);
 }
