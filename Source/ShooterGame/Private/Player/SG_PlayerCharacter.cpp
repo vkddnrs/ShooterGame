@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASG_PlayerCharacter::ASG_PlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
@@ -18,6 +20,11 @@ ASG_PlayerCharacter::ASG_PlayerCharacter(const FObjectInitializer& ObjInit) : Su
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
+
+    CameraCollisionComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
+    CameraCollisionComponent->SetupAttachment(CameraComponent);
+    CameraCollisionComponent->SetSphereRadius(10.f);
+    CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
 // Called to bind functionality to input
@@ -65,6 +72,36 @@ void ASG_PlayerCharacter::OnStopRunning()
     WantsToRun = false;
 }
 
+void ASG_PlayerCharacter::CheckCameraOverlap()
+{
+    const bool HideMesh = CameraCollisionComponent->IsOverlappingComponent(GetCapsuleComponent());
+    GetMesh()->SetOwnerNoSee(HideMesh);
+
+    TArray<USceneComponent*> MeshChildren;
+    GetMesh()->GetChildrenComponents(true, MeshChildren);
+
+    for(auto MeshChild : MeshChildren)
+    {
+        const auto MeshGeometry = Cast<UPrimitiveComponent>(MeshChild);
+        if(MeshGeometry)
+        {
+            MeshGeometry->SetOwnerNoSee(HideMesh);
+        }
+    }
+}
+
+void ASG_PlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    CheckCameraOverlap();
+}
+
+void ASG_PlayerCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    CheckCameraOverlap();
+}
+
 bool ASG_PlayerCharacter::IsRunning() const
 {
     return WantsToRun && IsMovingForward && !GetVelocity().IsZero();
@@ -78,4 +115,15 @@ void ASG_PlayerCharacter::OnDeath()
     {
         Controller->ChangeState(NAME_Spectating);
     }
+}
+
+void ASG_PlayerCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    ensure(CameraCollisionComponent);
+
+    CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASG_PlayerCharacter::OnCameraCollisionBeginOverlap);
+    CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASG_PlayerCharacter::OnCameraCollisionEndOverlap);
+
 }
