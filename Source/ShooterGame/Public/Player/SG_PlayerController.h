@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "SGCoreTypes.h"
 #include "SG_PlayerController.generated.h"
 
 
@@ -19,5 +20,11 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Components)
     class USG_RespawnComponent* RespawnComponent;
 
+    virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
+    virtual void SetupInputComponent() override;
+
+private:
+    void OnPauseGame();
+    void OnMathStateChanged(ESG_MathState MathState);
 };

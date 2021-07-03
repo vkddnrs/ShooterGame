@@ -21,6 +21,8 @@ public:
 
     virtual void StartPlay() override;
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
+    virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate) override;
+    virtual bool ClearPause() override;
 
     //Called by method UHealthComponent::Killed() of killed character.
     void Killed(AController* KillerController, AController* VictimController);

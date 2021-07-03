@@ -19,13 +19,16 @@ void AGameHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    if(ensure(PlayerHUDWidgetClass))
+    GameWidgets.Add(ESG_MathState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
+    GameWidgets.Add(ESG_MathState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
+
+    for(auto GameWidgetPair : GameWidgets)
     {
-        const auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
-        if(PlayerHUDWidget)
-        {
-            PlayerHUDWidget->AddToViewport();
-        }
+        const auto GameWidget = GameWidgetPair.Value;
+        if(!GameWidget) continue;
+
+        GameWidget->AddToViewport();
+        GameWidget->SetVisibility(ESlateVisibility::Hidden);
     }
 
     if(GetWorld())
@@ -36,7 +39,6 @@ void AGameHUD::BeginPlay()
             GameMode->OnMathStateChanged.AddUObject(this, &AGameHUD::OnMathStateChanged);
         }
     }
-
 }
 
 void AGameHUD::DrowCrossHair()
@@ -53,5 +55,20 @@ void AGameHUD::DrowCrossHair()
 
 void AGameHUD::OnMathStateChanged(ESG_MathState State)
 {
+    if(CurrentWidget)
+    {
+        CurrentWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+
+    if(GameWidgets.Contains(State))
+    {
+        CurrentWidget = GameWidgets[State];
+    }
+
+    if(CurrentWidget)
+    {
+        CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+    }
+
     UE_LOG(LogSG_GameHUD, Display, TEXT("MathStateChanged: %s"), *UEnum::GetValueAsString(State))
 }

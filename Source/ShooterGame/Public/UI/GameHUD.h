@@ -22,9 +22,18 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = UI)
     TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
 
+    UPROPERTY(EditDefaultsOnly, Category = UI)
+    TSubclassOf<UUserWidget> PauseWidgetClass;
+
     virtual void BeginPlay() override;
 
 private:
+    UPROPERTY()
+    TMap<ESG_MathState, UUserWidget*> GameWidgets;
+
+    UPROPERTY()
+    UUserWidget* CurrentWidget = nullptr;
+
     void DrowCrossHair();
     void OnMathStateChanged(ESG_MathState State);
 	
