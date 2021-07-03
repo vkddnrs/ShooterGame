@@ -26,5 +26,5 @@ protected:
 
 private:
     void OnPauseGame();
-    void OnMathStateChanged(ESG_MathState MathState);
+    void OnMathStateChanged(ESG_MatchState MathState);
 };

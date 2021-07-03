@@ -29,12 +29,12 @@ public:
 
 private:
     UPROPERTY()
-    TMap<ESG_MathState, UUserWidget*> GameWidgets;
+    TMap<ESG_MatchState, UUserWidget*> GameWidgets;
 
     UPROPERTY()
     UUserWidget* CurrentWidget = nullptr;
 
     void DrowCrossHair();
-    void OnMathStateChanged(ESG_MathState State);
+    void OnMathStateChanged(ESG_MatchState State);
 	
 };

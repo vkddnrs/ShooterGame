@@ -19,8 +19,9 @@ void AGameHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    GameWidgets.Add(ESG_MathState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
-    GameWidgets.Add(ESG_MathState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
+    GameWidgets.Add(ESG_MatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
+    GameWidgets.Add(ESG_MatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
+    GameWidgets.Add(ESG_MatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
 
     for(auto GameWidgetPair : GameWidgets)
     {
@@ -36,7 +37,7 @@ void AGameHUD::BeginPlay()
         const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode());
         if(GameMode)
         {
-            GameMode->OnMathStateChanged.AddUObject(this, &AGameHUD::OnMathStateChanged);
+            GameMode->OnMatchStateChanged.AddUObject(this, &AGameHUD::OnMathStateChanged);
         }
     }
 }
@@ -53,7 +54,7 @@ void AGameHUD::DrowCrossHair()
          LineColor, LineThickness);
 }
 
-void AGameHUD::OnMathStateChanged(ESG_MathState State)
+void AGameHUD::OnMathStateChanged(ESG_MatchState State)
 {
     if(CurrentWidget)
     {
@@ -70,5 +71,5 @@ void AGameHUD::OnMathStateChanged(ESG_MathState State)
         CurrentWidget->SetVisibility(ESlateVisibility::Visible);
     }
 
-    UE_LOG(LogSG_GameHUD, Display, TEXT("MathStateChanged: %s"), *UEnum::GetValueAsString(State))
+    //UE_LOG(LogSG_GameHUD, Display, TEXT("MathStateChanged: %s"), *UEnum::GetValueAsString(State))
 }

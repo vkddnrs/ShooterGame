@@ -17,7 +17,7 @@ void ASG_PlayerController::BeginPlay()
     if(GetWorld())
     {
         const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->OnMathStateChanged.AddUObject(this, &ASG_PlayerController::OnMathStateChanged);
+        GameMode->OnMatchStateChanged.AddUObject(this, &ASG_PlayerController::OnMathStateChanged);
     }
 }
 
@@ -46,9 +46,9 @@ void ASG_PlayerController::OnPauseGame()
 
 }
 
-void ASG_PlayerController::OnMathStateChanged(ESG_MathState MathState)
+void ASG_PlayerController::OnMathStateChanged(ESG_MatchState MathState)
 {
-    if(MathState == ESG_MathState::InProgress)
+    if(MathState == ESG_MatchState::InProgress)
     {
         SetInputMode(FInputModeGameOnly());
         bShowMouseCursor = false;

@@ -118,7 +118,7 @@ USTRUCT(BlueprintType) struct FGameData
 
 
 UENUM(BlueprintType)
-enum class ESG_MathState : uint8
+enum class ESG_MatchState : uint8
 {
     WaitingToStart = 0,
     InProgress,
@@ -126,4 +126,4 @@ enum class ESG_MathState : uint8
     GameOver
 };
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnMathStateChangedSignature, ESG_MathState);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, ESG_MatchState);
