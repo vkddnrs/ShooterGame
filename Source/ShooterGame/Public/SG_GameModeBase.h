@@ -45,7 +45,7 @@ protected:
     FGameData GameData;
 
 private:
-    ESG_MatchState MathState = ESG_MatchState::WaitingToStart;
+    ESG_MatchState MatchState = ESG_MatchState::WaitingToStart;
     int32 CurrentRound = 1;
     int32 RoundCountDown = 0;
     FTimerHandle GameRoundTimerHandle;
@@ -66,5 +66,5 @@ private:
     void LogPlayersInfo();
     void GameOver();
 
-    void SetMathState(ESG_MatchState State);
+    void SetMatchState(ESG_MatchState State);
 };

@@ -30,7 +30,7 @@ void ASG_GameModeBase::StartPlay()
     CurrentRound = 1;
     StartRound();
 
-    SetMathState(ESG_MatchState::InProgress);
+    SetMatchState(ESG_MatchState::InProgress);
 }
 
 UClass* ASG_GameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -50,7 +50,7 @@ bool ASG_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
     const bool bPauseSet = Super::SetPause(PC, CanUnpauseDelegate);
     if(bPauseSet)
     {
-        SetMathState(ESG_MatchState::Pause);
+        SetMatchState(ESG_MatchState::Pause);
     }
     return bPauseSet;
 }
@@ -60,7 +60,7 @@ bool ASG_GameModeBase::ClearPause()
     const bool bClearPause = Super::ClearPause();
     if(bClearPause)
     {
-        SetMathState(ESG_MatchState::InProgress);
+        SetMatchState(ESG_MatchState::InProgress);
     }
     return bClearPause;
 }
@@ -235,13 +235,13 @@ void ASG_GameModeBase::GameOver()
             Pawn->DisableInput(nullptr);
         }
     }
-    SetMathState(ESG_MatchState::GameOver);
+    SetMatchState(ESG_MatchState::GameOver);
 }
 
-void ASG_GameModeBase::SetMathState(ESG_MatchState State)
+void ASG_GameModeBase::SetMatchState(ESG_MatchState State)
 {
-    if(MathState == State) return;
+    if(MatchState == State) return;
 
-    MathState = State;
-    OnMatchStateChanged.Broadcast(MathState);
+    MatchState = State;
+    OnMatchStateChanged.Broadcast(MatchState);
 }
