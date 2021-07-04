@@ -160,16 +160,21 @@ void ASG_GameModeBase::CreateTeamsfInfo()
     if(!GetWorld()) return;
 
     int32 TeamID = 1;
+    int32 BotNumer = 1;
+
     for(auto It = GetWorld()->GetControllerIterator(); It; ++It)
     {
         const auto Controller = It->Get();
         if(!Controller) continue;
-
         const auto PlayerState = Cast<ASG_PlayerState>(Controller->PlayerState);
+        if(!PlayerState) continue;
+
         PlayerState->SetTeamID(TeamID);
         PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
+        PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot " + FString::FromInt(BotNumer++));
         SetPlayerColor(Controller);
         TeamID = TeamID == 1 ? 2 : 1;
+
     }
 }
 
