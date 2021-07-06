@@ -8,6 +8,7 @@
 #include "SG_GameOverWidget.generated.h"
 
 class UVerticalBox;
+class UButton;
 
 UCLASS()
 class SHOOTERGAME_API USG_GameOverWidget : public UUserWidget
@@ -15,11 +16,15 @@ class SHOOTERGAME_API USG_GameOverWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-    virtual bool Initialize() override;
+    virtual void NativeOnInitialized() override;
 
 protected:
     UPROPERTY(meta = (BindWinget))
     UVerticalBox* PlayerStatBox;
+
+    UPROPERTY(meta = (BindWinget))
+    UButton* ResetLevelButton;
+
 
     UPROPERTY(EditDefaultsOnly, Category = UI)
     TSubclassOf<UUserWidget> PlayerStatRowWidgetClass;
@@ -27,4 +32,7 @@ protected:
 private:
     void OnMatchStateChanged(ESG_MatchState State);
     void UpdatePlayersStat();
+
+    UFUNCTION()
+    void OnResetLevel();
 };
