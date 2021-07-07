@@ -2,6 +2,7 @@
 
 
 #include "Menu/SG_MenuPlayerController.h"
+#include "SG_GameInstance.h"
 
 void ASG_MenuPlayerController::BeginPlay()
 {
@@ -9,4 +10,6 @@ void ASG_MenuPlayerController::BeginPlay()
 
     SetInputMode(FInputModeUIOnly());
     bShowMouseCursor = true;
+
+    GetWorld()->GetGameInstance<USG_GameInstance>()->TestString = "Main menu say hello!";
 }

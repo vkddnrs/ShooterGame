@@ -9,6 +9,7 @@
 #include "SG_PlayerState.h"
 #include "Components/SG_RespawnComponent.h"
 #include "EngineUtils.h"
+#include "SG_GameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSGGameModeBase, All, All)
 
@@ -24,6 +25,8 @@ ASG_GameModeBase::ASG_GameModeBase()
 void ASG_GameModeBase::StartPlay()
 {
     Super::StartPlay();
+
+    UE_LOG(LogSGGameModeBase, Display, TEXT("%s"), *GetWorld()->GetGameInstance<USG_GameInstance>()->TestString)
 
     SpawnBots();
     CreateTeamsfInfo();
