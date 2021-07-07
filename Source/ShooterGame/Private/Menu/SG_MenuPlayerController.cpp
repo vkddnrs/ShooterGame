@@ -11,5 +11,5 @@ void ASG_MenuPlayerController::BeginPlay()
     SetInputMode(FInputModeUIOnly());
     bShowMouseCursor = true;
 
-    GetWorld()->GetGameInstance<USG_GameInstance>()->TestString = "Main menu say hello!";
+
 }

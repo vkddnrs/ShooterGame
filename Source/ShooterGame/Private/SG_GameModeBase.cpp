@@ -26,8 +26,6 @@ void ASG_GameModeBase::StartPlay()
 {
     Super::StartPlay();
 
-    UE_LOG(LogSGGameModeBase, Display, TEXT("%s"), *GetWorld()->GetGameInstance<USG_GameInstance>()->TestString)
-
     SpawnBots();
     CreateTeamsfInfo();
     CurrentRound = 1;
