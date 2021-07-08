@@ -21,7 +21,7 @@ void USG_MenuWidget::NativeOnInitialized()
 
 void USG_MenuWidget::OnStartGame()
 {
-    if(ensure(!GetWorld())) return;
+    if(!GetWorld()) return;
 
     const auto GameInstance = GetWorld()->GetGameInstance<USG_GameInstance>();
     if(!GameInstance) return;
