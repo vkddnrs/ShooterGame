@@ -127,3 +127,24 @@ enum class ESG_MatchState : uint8
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, ESG_MatchState);
+
+USTRUCT(BlueprintType) struct FLevelData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    uint16 LevelID = 0;
+
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    FName LevelName = NAME_None;
+
+    // Level name displayed in widget.
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    FName LevelDisplayName = NAME_None;
+
+    // Level pictures.
+    UPROPERTY(EditDefaultsOnly, Category = Game)
+    UTexture2D* LevelThumb;
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);
