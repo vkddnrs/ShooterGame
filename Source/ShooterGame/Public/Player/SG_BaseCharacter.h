@@ -46,6 +46,7 @@ protected:
 
     virtual void BeginPlay() override;
     virtual void OnDeath();
+    virtual void OnHealthChanged(float Health, float DeltaHealth);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -58,8 +59,6 @@ public:
     float GetMovementDirection() const;
 
 private:
-    void OnHealthChangedHandle(float Health, float DeltaHealth);
-
     UFUNCTION()
     void OnGroundLanded(const FHitResult& HitResult);
 

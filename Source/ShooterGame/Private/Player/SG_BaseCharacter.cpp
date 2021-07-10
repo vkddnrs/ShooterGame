@@ -32,10 +32,10 @@ void ASG_BaseCharacter::BeginPlay()
     check(GetCharacterMovement());
     check(GetMesh());
 
-    OnHealthChangedHandle(HealthComponent->GetHealth(), 0.f);
+    OnHealthChanged(HealthComponent->GetHealth(), 0.f);
 
     HealthComponent->OnDeath.AddUObject(this, &ASG_BaseCharacter::OnDeath);
-    HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChangedHandle);
+    HealthComponent->OnHealthChanged.AddUObject(this, &ASG_BaseCharacter::OnHealthChanged);
     LandedDelegate.AddDynamic(this, &ASG_BaseCharacter::OnGroundLanded);
 
     GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -76,7 +76,7 @@ void ASG_BaseCharacter::OnDeath()
     GetMesh()->SetSimulatePhysics(true);
 }
 
-void ASG_BaseCharacter::OnHealthChangedHandle(float Health, float DeltaHealth)
+void ASG_BaseCharacter::OnHealthChanged(float Health, float DeltaHealth)
 {
  
 }
