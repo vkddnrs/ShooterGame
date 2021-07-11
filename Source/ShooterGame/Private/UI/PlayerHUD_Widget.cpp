@@ -5,6 +5,7 @@
 #include "Components/HealthComponent.h"
 #include "Components/WeaponComponent.h"
 #include "ProjectUtils.h"
+#include "Components/ProgressBar.h"
 
 
 bool UPlayerHUD_Widget::Initialize()
@@ -51,13 +52,12 @@ bool UPlayerHUD_Widget::IsPlayerSpectating() const
     return Controller->GetStateName() == NAME_Spectating;
 }
 
-
-
 void UPlayerHUD_Widget::OnHealthChanged(float Health, float DeltaHealth)
 {
     if(DeltaHealth >= 0.f) return;
 
     OnTakeDamage();
+    UpdateHealthBar();
 }
 
 void UPlayerHUD_Widget::OnNewPawn(APawn* NewPawn)
@@ -69,6 +69,28 @@ void UPlayerHUD_Widget::OnNewPawn(APawn* NewPawn)
         UE_LOG(LogTemp, Display, TEXT("OnNewPawn() is called!!!"))
         HealthComponent->OnHealthChanged.AddUObject(this, &UPlayerHUD_Widget::OnHealthChanged);
     }
+    UpdateHealthBar();
 }
 
+void UPlayerHUD_Widget::UpdateHealthBar()
+{
+    if(HealthProgressBar)
+    {
+        HealthProgressBar->SetFillColorAndOpacity(GetHealthPercent() > PercentBadColorThreshold ? GoodColor : BadColor);
+    }
+}
 
+FString UPlayerHUD_Widget::FormatsBullet(int32 BulletsNum) const
+{
+    const int32 MaxLen = 2;
+    const TCHAR PrefixSymbol = '0';
+
+    FString BulletStr = FString::FromInt(BulletsNum);
+    const auto SymbolsNumToAdd = MaxLen - BulletStr.Len();
+
+    if(SymbolsNumToAdd > 0)
+    {
+        BulletStr = FString::ChrN(SymbolsNumToAdd, PrefixSymbol).Append(BulletStr);
+    }
+    return BulletStr;
+}

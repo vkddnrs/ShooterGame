@@ -35,3 +35,9 @@ void USG_PlayerStatRowWidget::SetPlayerIndicatorVisibility(bool Visible)
     if(!PlayerIndicatorImage) return;
     PlayerIndicatorImage->SetVisibility(Visible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
+
+void USG_PlayerStatRowWidget::SetTeamColor(const FLinearColor& Color)
+{
+    if(!TeamImage) return;
+    TeamImage->SetColorAndOpacity(Color);
+}
