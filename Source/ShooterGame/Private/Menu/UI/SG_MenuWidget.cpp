@@ -64,8 +64,14 @@ void USG_MenuWidget::InitLevelItems()
 
 void USG_MenuWidget::OnStartGame()
 {
-    if(!GetWorld()) return;
+    PlayAnimation(PreloadAnimation);
+}
 
+void USG_MenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
+{
+    if(Animation != PreloadAnimation) return;
+
+    if(!GetWorld()) return;
     const auto SGGameInstance = GetSGGameInstance();
     if(!SGGameInstance) return;
 
