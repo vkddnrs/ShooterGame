@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
 #include "SGCoreTypes.h"
+#include "SG_BaseWidget.h"
 #include "SG_MenuWidget.generated.h"
 
 class UButton;
@@ -13,7 +13,7 @@ class USG_GameInstance;
 class USG_LevelItemWidget;
 
 UCLASS()
-class SHOOTERGAME_API USG_MenuWidget : public UUserWidget
+class SHOOTERGAME_API USG_MenuWidget : public USG_BaseWidget
 {
 	GENERATED_BODY()
 

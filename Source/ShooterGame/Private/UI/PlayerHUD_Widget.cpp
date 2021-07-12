@@ -54,9 +54,15 @@ bool UPlayerHUD_Widget::IsPlayerSpectating() const
 
 void UPlayerHUD_Widget::OnHealthChanged(float Health, float DeltaHealth)
 {
-    if(DeltaHealth >= 0.f) return;
+    if(DeltaHealth < 0.f)
+    {
+        OnTakeDamage();
+        if(!IsAnimationPlaying(DamageAnimation))
+        {
+            PlayAnimation(DamageAnimation);
+        }
+    }
 
-    OnTakeDamage();
     UpdateHealthBar();
 }
 

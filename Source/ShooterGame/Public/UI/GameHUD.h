@@ -7,9 +7,8 @@
 #include "SGCoreTypes.h"
 #include "GameHUD.generated.h"
 
-/**
- * 
- */
+class USG_BaseWidget;
+
 UCLASS()
 class SHOOTERGAME_API AGameHUD : public AHUD
 {
@@ -32,10 +31,10 @@ public:
 
 private:
     UPROPERTY()
-    TMap<ESG_MatchState, UUserWidget*> GameWidgets;
+    TMap<ESG_MatchState, USG_BaseWidget*> GameWidgets;
 
     UPROPERTY()
-    UUserWidget* CurrentWidget = nullptr;
+    USG_BaseWidget* CurrentWidget = nullptr;
 
     void DrowCrossHair();
     void OnMathStateChanged(ESG_MatchState State);

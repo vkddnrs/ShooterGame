@@ -2,7 +2,7 @@
 
 
 #include "UI/GameHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/SG_BaseWidget.h"
 #include "Engine/Canvas.h"
 #include "SG_GameModeBase.h"
 
@@ -19,9 +19,9 @@ void AGameHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    GameWidgets.Add(ESG_MatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
-    GameWidgets.Add(ESG_MatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-    GameWidgets.Add(ESG_MatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+    GameWidgets.Add(ESG_MatchState::InProgress, CreateWidget<USG_BaseWidget>(GetWorld(), PlayerHUDWidgetClass));
+    GameWidgets.Add(ESG_MatchState::Pause, CreateWidget<USG_BaseWidget>(GetWorld(), PauseWidgetClass));
+    GameWidgets.Add(ESG_MatchState::GameOver, CreateWidget<USG_BaseWidget>(GetWorld(), GameOverWidgetClass));
 
     for(auto GameWidgetPair : GameWidgets)
     {
@@ -69,6 +69,7 @@ void AGameHUD::OnMathStateChanged(ESG_MatchState State)
     if(CurrentWidget)
     {
         CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+        CurrentWidget->Show();
     }
 
     //UE_LOG(LogSG_GameHUD, Display, TEXT("MathStateChanged: %s"), *UEnum::GetValueAsString(State))
