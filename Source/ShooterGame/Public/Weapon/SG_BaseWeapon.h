@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_BaseWeapon.generated.h"
 
 class UNiagaraSystem;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SGCoreTypes.generated.h"
+#include "SG_CoreTypes.generated.h"
 
 class ASG_BaseWeapon;
 

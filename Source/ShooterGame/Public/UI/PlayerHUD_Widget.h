@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UI/SG_BaseWidget.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "PlayerHUD_Widget.generated.h"
 
 class UProgressBar;

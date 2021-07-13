@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_GameInstance.generated.h"
 
 

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "HealthComponent.generated.h"
 
 //class UCameraShake;

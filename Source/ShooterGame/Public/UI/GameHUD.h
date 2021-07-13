@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "GameHUD.generated.h"
 
 class USG_BaseWidget;

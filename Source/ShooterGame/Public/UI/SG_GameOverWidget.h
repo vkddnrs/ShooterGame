@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SG_BaseWidget.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_GameOverWidget.generated.h"
 
 class UVerticalBox;

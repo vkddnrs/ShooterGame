@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_BaseWidget.h"
 #include "SG_MenuWidget.generated.h"
 

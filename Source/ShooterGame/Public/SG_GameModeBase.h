@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_GameModeBase.generated.h"
 
 class AAIController;

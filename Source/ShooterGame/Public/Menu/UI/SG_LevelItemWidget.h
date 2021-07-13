@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_LevelItemWidget.generated.h"
 
 class UButton;

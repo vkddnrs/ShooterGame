@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "SGCoreTypes.h"
+#include "SG_CoreTypes.h"
 #include "SG_PlayerController.generated.h"
 
 
