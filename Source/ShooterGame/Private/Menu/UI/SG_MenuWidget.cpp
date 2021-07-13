@@ -8,6 +8,7 @@
 #include "SG_GameInstance.h"
 #include "Components/HorizontalBox.h"
 #include "Menu/UI/SG_LevelItemWidget.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSG_MenuWidget, All, All)
 
@@ -65,13 +66,16 @@ void USG_MenuWidget::InitLevelItems()
 void USG_MenuWidget::OnStartGame()
 {
     PlayAnimation(PreloadAnimation);
+
+    if(GetWorld() && StartGameSound)
+    {
+        UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
+    }
 }
 
 void USG_MenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
 {
-    if(Animation != PreloadAnimation) return;
-
-    if(!GetWorld()) return;
+    if(Animation != PreloadAnimation) return;  
     const auto SGGameInstance = GetSGGameInstance();
     if(!SGGameInstance) return;
 

@@ -6,9 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "SG_BaseWidget.generated.h"
 
-/**
- * 
- */
+class USoundCue;
+
 UCLASS()
 class SHOOTERGAME_API USG_BaseWidget : public UUserWidget
 {
@@ -20,4 +19,7 @@ public:
 protected:
     UPROPERTY(meta = (BindWidgetAnim), Transient)
     UWidgetAnimation* ShowAnimation;
+
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* OpenSound;
 };

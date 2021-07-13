@@ -11,6 +11,7 @@ class UButton;
 class UHorizontalBox;
 class USG_GameInstance;
 class USG_LevelItemWidget;
+class USoundCue;
 
 UCLASS()
 class SHOOTERGAME_API USG_MenuWidget : public USG_BaseWidget
@@ -32,6 +33,9 @@ protected:
 
     UPROPERTY(meta = (BindWidgetAnim), Transient)
     UWidgetAnimation* PreloadAnimation;
+
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* StartGameSound;
 
     virtual void NativeOnInitialized() override;
     virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
