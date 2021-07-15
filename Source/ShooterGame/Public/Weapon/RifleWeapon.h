@@ -6,13 +6,10 @@
 #include "Weapon/SG_BaseWeapon.h"
 #include "RifleWeapon.generated.h"
 
-/**
- * 
- */
-
 class UWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UAudioComponent;
 
 UCLASS()
 class SHOOTERGAME_API ARifleWeapon : public ASG_BaseWeapon
@@ -23,6 +20,7 @@ public:
     ARifleWeapon();
     void StartFire() override;
     void StopFire() override;
+    bool IsAmmoInfinit() const { return CurrentAmmo.bInfinite; }
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = Weapon)
@@ -53,8 +51,11 @@ private:
     UPROPERTY()
     UNiagaraComponent* MuzzleFXComponent;
 
-    void InitMuzzleFX();
-    void SetMuzzleFXVisible(bool Visible);
+    UPROPERTY()
+    UAudioComponent* FireAudioComponent;
+
+    void InitFX(); // init of FX and sound
+    void SetFXVActive(bool IsActive); // handle of FX and sound
     void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
     AController* GetController() const;
 

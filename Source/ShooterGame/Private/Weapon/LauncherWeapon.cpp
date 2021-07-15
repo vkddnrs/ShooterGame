@@ -3,25 +3,25 @@
 
 #include "Weapon/LauncherWeapon.h"
 #include "Weapon/Bombshell.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ALauncherWeapon::StartFire()
 {
     MakeShot();
 }
 
-
-
 void ALauncherWeapon::MakeShot()
 {
-    Super::MakeShot();
+    Super::MakeShot();  
+
+    if(!GetWorld()) return;
 
     if(IsAmmoEmpty())
     {
-        StopFire();
+        UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
         return;
-    }    
-
-    if(!ensure(GetWorld())) return;
+    }  
 
     FVector TraceStart, TraceEnd;
     if(!GetTraceData(TraceStart, TraceEnd)) return;
@@ -45,4 +45,6 @@ void ALauncherWeapon::MakeShot()
 
     DecreaseAmmo();
     SpawnMuzzleFX();
+
+    UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
 }

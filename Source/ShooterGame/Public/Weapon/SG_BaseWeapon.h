@@ -9,6 +9,7 @@
 
 class UNiagaraSystem;
 class UNiagaraComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseWeapon : public AActor
@@ -52,6 +53,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = VFX)
     UNiagaraSystem* MuzzleFX;
 
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* FireSound;
+
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* NoAmmoSound;
+
     virtual void BeginPlay() override;
 
     virtual void MakeShot();
@@ -72,7 +79,6 @@ protected:
 
     UNiagaraComponent* SpawnMuzzleFX();
 
-private:
     FAmmoData CurrentAmmo;
 
 

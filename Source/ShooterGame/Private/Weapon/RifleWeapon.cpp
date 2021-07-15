@@ -7,6 +7,9 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -22,7 +25,7 @@ void ARifleWeapon::BeginPlay()
 
 void ARifleWeapon::StartFire()
 {
-    InitMuzzleFX();
+    InitFX();
     GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ARifleWeapon::MakeShot, TimeBetweenShots, true);
     MakeShot();
 }
@@ -30,20 +33,24 @@ void ARifleWeapon::StartFire()
 void ARifleWeapon::StopFire()
 {
     GetWorldTimerManager().ClearTimer(ShotTimerHandle);
-    SetMuzzleFXVisible(false);
+    SetFXVActive(false);
 }
 
 void ARifleWeapon::MakeShot()
 {
     //Super::MakeShot();
 
+     if(!GetWorld()) return;
+
     if(IsAmmoEmpty())
     {
         StopFire();
+        if(!IsAmmoInfinit())
+        {
+            UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
+        } 
         return;
-    }    
-
-    if(!ensure(GetWorld())) return;
+    }       
 
     FVector TraceStart, TraceEnd;
     if(!GetTraceData(TraceStart, TraceEnd)) return;
@@ -78,22 +85,31 @@ bool ARifleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
     return true;
 }
 
-void ARifleWeapon::InitMuzzleFX()
+void ARifleWeapon::InitFX()
 {
     if(!MuzzleFXComponent)
     {
         MuzzleFXComponent = SpawnMuzzleFX();
     }
-    SetMuzzleFXVisible(true);
+
+    if(!FireAudioComponent)
+    {
+        FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+    }
+    SetFXVActive(true);
 }
 
-void ARifleWeapon::SetMuzzleFXVisible(bool Visible)
+void ARifleWeapon::SetFXVActive(bool IsActive)
 {
     if(!MuzzleFXComponent) return;
 
-    MuzzleFXComponent->SetPaused(!Visible);
-    MuzzleFXComponent->SetVisibility(Visible, true);
+    MuzzleFXComponent->SetPaused(!IsActive);
+    MuzzleFXComponent->SetVisibility(IsActive, true);
 
+    if(FireAudioComponent)
+    {
+        IsActive ? FireAudioComponent->Play() : FireAudioComponent->Stop();
+    }
 }
 
 void ARifleWeapon::SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd)

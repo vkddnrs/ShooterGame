@@ -35,9 +35,7 @@ void ASG_BaseWeapon::BeginPlay()
 }
 
 void ASG_BaseWeapon::MakeShot()
-{
-    // UE_LOG(LogBaseWeapon, Display, TEXT("MakeShot"))
-}
+{}
 
 void ASG_BaseWeapon::StartFire()
 {

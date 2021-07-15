@@ -8,6 +8,7 @@
 
 class UHealthComponent;
 class UWeaponComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
@@ -43,6 +44,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = Material)
     FName MaterialColorName = "Paint Color";
+
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* DeathSound;
 
     virtual void BeginPlay() override;
     virtual void OnDeath();
