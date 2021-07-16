@@ -3,6 +3,7 @@
 #include "SG_CoreTypes.generated.h"
 
 class ASG_BaseWeapon;
+class USoundCue;
 
     // weapon
 
@@ -87,6 +88,9 @@ USTRUCT(BlueprintType) struct FImpactData
 
     UPROPERTY(EditDefaultsOnly, Category = VFX)
     FDecalData DecalData;
+
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundCue* Sound;
 };
 
 USTRUCT(BlueprintType) struct FGameData
@@ -148,3 +152,5 @@ USTRUCT(BlueprintType) struct FLevelData
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);
+
+

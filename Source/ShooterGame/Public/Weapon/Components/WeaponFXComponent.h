@@ -27,4 +27,5 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = VFX)
     TMap<UPhysicalMaterial*, FImpactData> ImpactDataMap;
+
 };

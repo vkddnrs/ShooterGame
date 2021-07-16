@@ -23,6 +23,9 @@ protected:
     UPROPERTY(EditAnywhere, Category = Pickup)
     float RespawnTime = 5.f;
 
+    UPROPERTY(EditDefaultsOnly, Category = Sound)
+    class USoundCue* PickupTakenSound;
+
 	virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
     virtual bool GivePickupTo(APawn* PlayerPawn); 
