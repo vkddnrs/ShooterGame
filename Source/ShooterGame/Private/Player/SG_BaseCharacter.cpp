@@ -25,6 +25,18 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
     WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 }
 
+void ASG_BaseCharacter::TurnOff()
+{
+    WeaponComponent->StopFire();
+    Super::TurnOff();
+}
+
+void ASG_BaseCharacter::Reset()
+{
+    WeaponComponent->StopFire();
+    Super::Reset();
+}
+
 // Called when the game starts or when spawned
 void ASG_BaseCharacter::BeginPlay()
 {
@@ -32,6 +44,8 @@ void ASG_BaseCharacter::BeginPlay()
 
     check(HealthComponent);
     check(GetCharacterMovement());
+    check(GetCapsuleComponent());
+    check(WeaponComponent);
     check(GetMesh());
 
     OnHealthChanged(HealthComponent->GetHealth(), 0.f);

@@ -67,4 +67,6 @@ private:
     void GameOver();
 
     void SetMatchState(ESG_MatchState State);
+
+    void StopAllFire();
 };

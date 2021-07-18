@@ -18,6 +18,8 @@ class SHOOTERGAME_API ASG_BaseCharacter : public ACharacter
 public:
     // для подключения в конструкторе нашего кастомного SG_CharacterMovementComponent
 	ASG_BaseCharacter(const FObjectInitializer& ObjInit);
+	virtual void TurnOff() override;
+    virtual void Reset() override;
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)

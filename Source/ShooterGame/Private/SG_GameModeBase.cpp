@@ -9,7 +9,8 @@
 #include "SG_PlayerState.h"
 #include "Components/SG_RespawnComponent.h"
 #include "EngineUtils.h"
-#include "SG_GameInstance.h"
+#include "Components/WeaponComponent.h"
+//#include "SG_GameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSGGameModeBase, All, All)
 
@@ -51,6 +52,7 @@ bool ASG_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
     const bool bPauseSet = Super::SetPause(PC, CanUnpauseDelegate);
     if(bPauseSet)
     {
+        StopAllFire();
         SetMatchState(ESG_MatchState::Pause);
     }
     return bPauseSet;
@@ -249,4 +251,18 @@ void ASG_GameModeBase::SetMatchState(ESG_MatchState State)
 
     MatchState = State;
     OnMatchStateChanged.Broadcast(MatchState);
+}
+
+void ASG_GameModeBase::StopAllFire()
+{
+    for(auto Pawn : TActorRange<APawn>(GetWorld()))
+    {
+        if(Pawn)
+        {
+            const auto WeaponComponent = Pawn->FindComponentByClass<UWeaponComponent>();
+            if(!WeaponComponent) continue;
+
+            WeaponComponent->StopFire();
+        }
+    }
 }

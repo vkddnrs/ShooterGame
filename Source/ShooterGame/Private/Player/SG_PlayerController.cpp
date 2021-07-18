@@ -15,10 +15,12 @@ void ASG_PlayerController::BeginPlay()
 {
     Super::BeginPlay();
 
-    if(GetWorld())
+    if(GetWorld()) 
     {
-        const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->OnMatchStateChanged.AddUObject(this, &ASG_PlayerController::OnMathStateChanged);
+        if(const auto GameMode = Cast<ASG_GameModeBase>(GetWorld()->GetAuthGameMode()))
+        {
+            GameMode->OnMatchStateChanged.AddUObject(this, &ASG_PlayerController::OnMathStateChanged);
+        }
     }
 }
 
