@@ -38,7 +38,8 @@ public class ShooterGame : ModuleRules
 			"ShooterGame/Public/AI/EQS",
 			"ShooterGame/Public/AI/Decorators",
 			"ShooterGame/Public/Menu",
-			"ShooterGame/Public/Menu/UI"
+			"ShooterGame/Public/Menu/UI",
+			"ShooterGame/Public/Sound"
 
 		}); // пути к хедерам
 

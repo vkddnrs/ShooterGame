@@ -8,6 +8,7 @@
 #include "SG_GameInstance.generated.h"
 
 
+
 UCLASS()
 class SHOOTERGAME_API USG_GameInstance : public UGameInstance
 {
@@ -19,6 +20,8 @@ public:
 
     TArray<FLevelData> GetLevelsData() const { return LevelsData; } // TODO  return const reference
 
+    void ToggleVolume();
+
     inline FName GetMainMenuLevelName() const { return MainMenuLevelName; }
 
 protected:
@@ -27,6 +30,10 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = Game)
     FName MainMenuLevelName = NAME_None;
+
+     UPROPERTY(EditDefaultsOnly, Category = Sound)
+    USoundClass* MasterSoundClass;
+
 
 private:
     FLevelData StartupLevel;

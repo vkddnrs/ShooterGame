@@ -112,7 +112,7 @@ void ASG_GameModeBase::StartRound()
 
 void ASG_GameModeBase::GameTimerUpdate()
 {
-    UE_LOG(LogSGGameModeBase, Display, TEXT("Time: %i / Round %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum)
+    //UE_LOG(LogSGGameModeBase, Display, TEXT("Time: %i / Round %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum)
 
     // in the case when you need to know the frequency of the timer.
     // const auto TimerRate = GetWorldTimerManager().GetTimerRate(GameRoundTimerHandle);
@@ -175,7 +175,6 @@ void ASG_GameModeBase::CreateTeamsfInfo()
         PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot " + FString::FromInt(BotNumer++));
         SetPlayerColor(Controller);
         TeamID = TeamID == 1 ? 2 : 1;
-
     }
 }
 

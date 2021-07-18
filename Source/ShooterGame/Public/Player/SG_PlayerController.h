@@ -27,4 +27,5 @@ protected:
 private:
     void OnPauseGame();
     void OnMathStateChanged(ESG_MatchState MathState);
+    void OnMuteSound();
 };

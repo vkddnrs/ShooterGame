@@ -4,6 +4,7 @@
 #include "SG_PlayerController.h"
 #include "Components/SG_RespawnComponent.h"
 #include "SG_GameModeBase.h"
+#include "SG_GameInstance.h"
 
 ASG_PlayerController::ASG_PlayerController()
 {
@@ -35,6 +36,7 @@ void ASG_PlayerController::SetupInputComponent()
     if(!InputComponent) return;
 
     InputComponent->BindAction("PauseGame", EInputEvent::IE_Pressed, this, &ASG_PlayerController::OnPauseGame);
+    InputComponent->BindAction("Mute", EInputEvent::IE_Pressed, this, &ASG_PlayerController::OnMuteSound);
 
 }
 
@@ -58,4 +60,14 @@ void ASG_PlayerController::OnMathStateChanged(ESG_MatchState MathState)
         SetInputMode(FInputModeUIOnly());
         bShowMouseCursor = true;
     }
+}
+
+void ASG_PlayerController::OnMuteSound()
+{
+    if(!GetWorld()) return;
+
+    const auto GameInstance = GetWorld()->GetGameInstance<USG_GameInstance>();
+    if(!GameInstance)return;
+
+    GameInstance->ToggleVolume();
 }
