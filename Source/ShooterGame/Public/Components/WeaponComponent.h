@@ -28,6 +28,8 @@ public:
     bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
+    void Zoom(bool Enabled);
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = WeaponData)
     TArray<FWeaponData> WeaponData;

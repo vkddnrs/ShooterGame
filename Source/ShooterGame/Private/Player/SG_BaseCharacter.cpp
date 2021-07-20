@@ -87,6 +87,7 @@ void ASG_BaseCharacter::OnDeath()
     GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
     GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
     WeaponComponent->StopFire();
+    WeaponComponent->Zoom(false);
 
     GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     GetMesh()->SetSimulatePhysics(true);

@@ -120,6 +120,7 @@ void UWeaponComponent::EquipWeapon(int32 WeaponIndex)
     // если CurrentWeapon уже существует, то его надо вернуть в положение за спиной
     if(CurrentWeapon)
     {
+        CurrentWeapon->Zoom(false);
         CurrentWeapon->StopFire();
         AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmourySocketName);
     }
@@ -194,6 +195,14 @@ bool UWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
         return true;
     }
     return false;
+}
+
+void UWeaponComponent::Zoom(bool Enabled)
+{
+    if(CurrentWeapon)
+    {
+        CurrentWeapon->Zoom(Enabled);
+    }
 }
 
 void UWeaponComponent::StartFire()

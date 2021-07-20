@@ -20,6 +20,7 @@ public:
     ARifleWeapon();
     void StartFire() override;
     void StopFire() override;
+    virtual void Zoom(bool Enabled) override;
     bool IsAmmoInfinit() const { return CurrentAmmo.bInfinite; }
 
 protected:

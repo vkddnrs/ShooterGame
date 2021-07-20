@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "Math/Interval.h"
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -20,7 +21,10 @@ void ARifleWeapon::BeginPlay()
 {
     Super::BeginPlay();
 
-    //ensure(WeaponFXComponent->GetEffect());
+    if(const auto Controller = Cast<APlayerController>(GetController()))
+    {
+        FOV_CameraDefault = Controller->PlayerCameraManager->GetFOVAngle();
+    }
 }
 
 void ARifleWeapon::StartFire()
@@ -36,11 +40,19 @@ void ARifleWeapon::StopFire()
     SetFXVActive(false);
 }
 
+void ARifleWeapon::Zoom(bool Enabled)
+{
+    const auto Controller = Cast<APlayerController>(GetController());
+    if(!Controller || !Controller->PlayerCameraManager) return;
+
+    Controller->PlayerCameraManager->SetFOV(Enabled ? FOV_ZoomAngle : FOV_CameraDefault);
+}
+
 void ARifleWeapon::MakeShot()
 {
     //Super::MakeShot();
 
-     if(!GetWorld()) return;
+    if(!GetWorld()) return;
 
     if(IsAmmoEmpty())
     {

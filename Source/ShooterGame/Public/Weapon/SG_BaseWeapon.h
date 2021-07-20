@@ -22,11 +22,12 @@ public:
     FOnClipEmptySignature OnClipEmpty;
     virtual void StartFire();
     virtual void StopFire();
+    virtual void Zoom(bool Enabled) {}
 
     void ChangeClip();
     bool IsCanReload() const;
     bool TryToAddAmmo(int32 ClipsAmount);
-    bool IsAmmoEmpty() const;
+    bool IsAmmoEmpty() const;    
 
     FWeaponUIData GetCurrentWeaponUIData() const { return WeaponUIData; }
     FAmmoData GetCurrentAmmoData() const { return CurrentAmmo;  }
@@ -59,6 +60,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = Sound)
     USoundCue* NoAmmoSound;
 
+    UPROPERTY(EditDefaultsOnly, Category = Zoom)
+    float FOV_ZoomAngle = 50.f;
+
     virtual void BeginPlay() override;
 
     virtual void MakeShot();
@@ -81,5 +85,5 @@ protected:
 
     FAmmoData CurrentAmmo;
 
-
+    float FOV_CameraDefault = 90.f;
 };

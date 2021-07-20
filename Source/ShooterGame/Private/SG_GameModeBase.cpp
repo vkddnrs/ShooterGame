@@ -53,6 +53,10 @@ bool ASG_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
     if(bPauseSet)
     {
         StopAllFire();
+        if(const auto WeaponComponent = PC->FindComponentByClass<UWeaponComponent>())
+        {
+            WeaponComponent->Zoom(false);
+        }
         SetMatchState(ESG_MatchState::Pause);
     }
     return bPauseSet;
