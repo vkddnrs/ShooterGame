@@ -1,9 +1,9 @@
 // ShooterGame. All Right Reserved.
 
-
 #include "Components/HealthComponent.h"
 #include "TimerManager.h"
 #include "SG_GameModeBase.h"
+#include "GameFramework/Character.h"
 //#include "GameFramework/Controller.h"
 //#include "Camera/CameraShake.h"
 
@@ -11,31 +11,31 @@ DECLARE_LOG_CATEGORY_CLASS(LogHealthComponent, All, All)
 
 UHealthComponent::UHealthComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+    PrimaryComponentTick.bCanEverTick = false;
 }
-
 
 // Called when the game starts
 void UHealthComponent::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
     SetHealth(MaxHealth);
     check(MaxHealth > 0)
-    
-    AActor* ComponentOwner = GetOwner();
-    if (ComponentOwner)
-        ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnTakeAnyDamageHandle);
-}
 
+        AActor* ComponentOwner = GetOwner();
+    if(ComponentOwner)
+    {
+        ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnTakeAnyDamage);
+        ComponentOwner->OnTakePointDamage.AddDynamic(this, &UHealthComponent::OnTakePointDamage);
+        ComponentOwner->OnTakeRadialDamage.AddDynamic(this, &UHealthComponent::OnTakeRadialDamage);
+    }
+}
 
 void UHealthComponent::HealUpdate()
 {
     SetHealth(Health + HealModifier);
 
-    if(FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld()) 
-        GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
-
+    if(FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld()) GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 }
 
 // Set Health and invoke Broadcast
@@ -61,36 +61,7 @@ void UHealthComponent::PlayCameraShake()
     if(!Player) return;
     const auto Controller = Player->GetController<APlayerController>();
     if(!Controller || !Controller->PlayerCameraManager) return;
-    Controller->PlayerCameraManager->StartCameraShake(CameraShake);         
-}
-
-void UHealthComponent::OnTakeAnyDamageHandle(
-    AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
-{
-    if(!ensure(GetWorld())) return;
-
-    //UE_LOG(LogHealthComponent, Warning, TEXT("I: %s tike damage from %s"), *GetOwner()->GetName(), *DamageCauser->GetName())
-
-    if(Damage <= 0.f || IsDead())  return; 
-
-    // if Heal is active - we stopping him
-    if(GetWorld()->GetTimerManager().IsTimerActive(HealTimerHandle))
-    {
-        GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
-    }
-
-    SetHealth(Health - Damage);
-    if(IsDead())
-    {
-        Killed(InstigatedBy); // The controller of the character that called the function OnTakeAnyDamageHandle().
-        OnDeath.Broadcast();
-    }
-    else if(Health < MaxHealth && AutoHeal && GetWorld())
-    {
-        GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &UHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
-    }
-
-    PlayCameraShake();
+    Controller->PlayerCameraManager->StartCameraShake(CameraShake);
 }
 
 void UHealthComponent::Killed(AController* KillerController) const
@@ -111,4 +82,67 @@ bool UHealthComponent::TryAddHealthAmount(float HealthAmount)
 
     SetHealth(Health + HealthAmount);
     return true;
+}
+
+void UHealthComponent::OnTakeAnyDamage(
+    AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+    UE_LOG(LogHealthComponent, Display, TEXT("On any damage: %f"), Damage)
+}
+
+void UHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation,
+    UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
+{
+    const float FinalDamage = Damage * GetPointDamageModifier(DamagedActor, BoneName);
+    UE_LOG(LogHealthComponent, Display, TEXT("On final point damage: %f, bone: %s"), FinalDamage, *BoneName.ToString())
+    ApplyDamage(FinalDamage, InstigatedBy);
+}
+
+void UHealthComponent::OnTakeRadialDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, FVector Origin,
+    FHitResult HitInfo, AController* InstigatedBy, AActor* DamageCauser)
+{
+    UE_LOG(LogHealthComponent, Display, TEXT("On radial damage: %f"), Damage)
+    ApplyDamage(Damage, InstigatedBy);
+}
+
+void UHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
+{
+    if(!ensure(GetWorld())) return;
+
+    // UE_LOG(LogHealthComponent, Warning, TEXT("I: %s tike damage from %s"), *GetOwner()->GetName(), *DamageCauser->GetName())
+
+    if(Damage <= 0.f || IsDead()) return;
+
+    // if Heal is active - we stopping him
+    if(GetWorld()->GetTimerManager().IsTimerActive(HealTimerHandle))
+    {
+        GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
+    }
+
+    SetHealth(Health - Damage);
+    if(IsDead())
+    {
+        Killed(InstigatedBy);  // The controller of the character that called the function OnTakeAnyDamageHandle().
+        OnDeath.Broadcast();
+    }
+    else if(Health < MaxHealth && AutoHeal && GetWorld())
+    {
+        GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &UHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
+    }
+
+    PlayCameraShake();
+}
+
+float UHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName)
+{
+    const auto Character = Cast<ACharacter>(DamagedActor);
+    if( !Character ||             //
+        !Character->GetMesh() ||  //
+        !Character->GetMesh()->GetBodyInstance(BoneName))
+        return 1.f;
+
+    const auto PhysMaterial = Character->GetMesh()->GetBodyInstance(BoneName)->GetSimplePhysicalMaterial();
+    if(!PhysMaterial || !DamageModifiers.Contains(PhysMaterial)) return 1.f;
+
+    return DamageModifiers[PhysMaterial];
 }

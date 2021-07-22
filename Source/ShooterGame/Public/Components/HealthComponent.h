@@ -32,6 +32,9 @@ public:
 protected:
     virtual void BeginPlay() override;
 
+    UPROPERTY(EditDefaultsOnly, Category = Health)
+    TMap<UPhysicalMaterial*, float> DamageModifiers;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (ClampMin = "1.0", ClampMax = "1000.0"))
     float MaxHealth = 100.f;
 
@@ -64,10 +67,21 @@ private:
     void PlayCameraShake();
 
     UFUNCTION()
-    void OnTakeAnyDamageHandle(
+    void OnTakeAnyDamage(
         AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+    UFUNCTION()
+    void OnTakePointDamage(AActor* DamagedActor, float Damage, class AController* InstigatedBy, FVector HitLocation,
+        class UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const class UDamageType* DamageType,
+        AActor* DamageCauser);
+
+    UFUNCTION()
+    void OnTakeRadialDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, FVector Origin, FHitResult HitInfo,
+         class AController* InstigatedBy, AActor* DamageCauser );
 
     // Calls method ASG_GameModeBase::Killed(), passing the killer and victim (self) controllers to it.
     void Killed(AController* KillerController) const;
 
+    void ApplyDamage(float Damage, AController* InstigatedBy);
+    float GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName);
 };

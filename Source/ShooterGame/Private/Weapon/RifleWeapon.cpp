@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
-#include "Math/Interval.h"
+
 
 ARifleWeapon::ARifleWeapon()
 {
@@ -142,8 +142,10 @@ AController* ARifleWeapon::GetController() const
 void ARifleWeapon::MakeDamage(const FHitResult& HitResult)
 {
     auto DamagedActor = HitResult.GetActor();
-    if(DamagedActor && DamagedActor->IsA<ACharacter>())
-    {
-        DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetController(), this);
-    }
+    if(!DamagedActor) return;
+
+    FPointDamageEvent PointDamageEvent;
+    PointDamageEvent.HitInfo = HitResult;
+    DamagedActor->TakeDamage(DamageAmount, PointDamageEvent, GetController(), this);
+    
 }
