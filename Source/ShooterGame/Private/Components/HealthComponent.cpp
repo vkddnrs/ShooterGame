@@ -4,8 +4,8 @@
 #include "TimerManager.h"
 #include "SG_GameModeBase.h"
 #include "GameFramework/Character.h"
-//#include "GameFramework/Controller.h"
-//#include "Camera/CameraShake.h"
+#include "Perception/AISense_Damage.h"
+
 
 DECLARE_LOG_CATEGORY_CLASS(LogHealthComponent, All, All)
 
@@ -131,6 +131,7 @@ void UHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
     }
 
     PlayCameraShake();
+    ReportDamageEvent(Damage, InstigatedBy);
 }
 
 float UHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName)
@@ -145,4 +146,13 @@ float UHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName
     if(!PhysMaterial || !DamageModifiers.Contains(PhysMaterial)) return 1.f;
 
     return DamageModifiers[PhysMaterial];
+}
+
+void UHealthComponent::ReportDamageEvent(float Damage, AController* InstigatedBy)
+{
+    if(!GetWorld() || !InstigatedBy || !InstigatedBy->GetPawn() || !GetOwner()) return;
+
+    // We send the info to AIPerceptionComponent about take damage.
+    UAISense_Damage::ReportDamageEvent(GetWorld(), GetOwner(), InstigatedBy->GetPawn(), 
+         Damage, InstigatedBy->GetPawn()->GetActorLocation(), GetOwner()->GetActorLocation());
 }
