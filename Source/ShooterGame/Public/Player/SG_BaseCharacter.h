@@ -20,6 +20,7 @@ public:
 	ASG_BaseCharacter(const FObjectInitializer& ObjInit);
 	virtual void TurnOff() override;
     virtual void Reset() override;
+    void OutGame();  
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)

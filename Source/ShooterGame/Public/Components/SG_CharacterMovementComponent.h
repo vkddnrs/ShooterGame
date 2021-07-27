@@ -19,5 +19,14 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Movement, meta = (ClampMin = "1.0", ClampMax = "10.0"))
     float RunModefier = 2.f;
-	
+
+    // The time after which the falling character will be killed.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Movement, meta = (ClampMin = "1.0", ClampMax = "10.0"))
+    float TimeFallingOnDeath = 5.f;
+
+protected:
+    FTimerHandle TimerFalling;
+
+    virtual void StartFalling(int32 Iterations, float remainingTime, float timeTick, const FVector& Delta, const FVector& subLoc) override;
+    void OnTimeDeath();
 };

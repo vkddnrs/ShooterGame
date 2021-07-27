@@ -88,6 +88,10 @@ void UHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
     UE_LOG(LogHealthComponent, Display, TEXT("On any damage: %f"), Damage)
+    if(!DamageCauser)
+    {
+        ApplyDamage(Damage, nullptr);
+    }
 }
 
 void UHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation,
