@@ -267,6 +267,7 @@ void ASG_GameModeBase::StopAllFire()
             if(!WeaponComponent) continue;
 
             WeaponComponent->StopFire();
+            WeaponComponent->Zoom(false);
         }
     }
 }

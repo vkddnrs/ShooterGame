@@ -28,12 +28,14 @@ ASG_BaseCharacter::ASG_BaseCharacter(const FObjectInitializer& ObjInit)
 void ASG_BaseCharacter::TurnOff()
 {
     WeaponComponent->StopFire();
+    WeaponComponent->Zoom(false);
     Super::TurnOff();
 }
 
 void ASG_BaseCharacter::Reset()
 {
     WeaponComponent->StopFire();
+    WeaponComponent->Zoom(false);
     Super::Reset();
 }
 
