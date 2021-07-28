@@ -6,9 +6,9 @@
 #include "Player/SG_BaseCharacter.h"
 #include "SG_PlayerCharacter.generated.h"
 
-class USpringArmComponent;	
-class UCameraComponent;
-class USphereComponent;
+//class USpringArmComponent;	
+//class UCameraComponent;
+//class USphereComponent;
 
 
 UCLASS()
@@ -20,14 +20,14 @@ public:
 
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
-    USpringArmComponent* SpringArmComponent;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+ //   USpringArmComponent* SpringArmComponent;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
-    UCameraComponent* CameraComponent;
+ //   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+ //   UCameraComponent* CameraComponent;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
-    USphereComponent* CameraCollisionComponent;
+ //   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+ //   USphereComponent* CameraCollisionComponent;
 
     virtual void OnDeath() override;
 

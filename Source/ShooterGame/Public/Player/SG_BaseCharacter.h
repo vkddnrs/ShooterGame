@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "SG_BaseCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class USphereComponent;
 class UHealthComponent;
 class UWeaponComponent;
 class USoundCue;
@@ -23,6 +26,14 @@ public:
     void OutGame();  
 
 protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    USpringArmComponent* SpringArmComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    UCameraComponent* CameraComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    USphereComponent* CameraCollisionComponent;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
     UHealthComponent* HealthComponent;
 

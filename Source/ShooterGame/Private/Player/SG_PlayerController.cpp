@@ -42,6 +42,14 @@ void ASG_PlayerController::SetupInputComponent()
 
 }
 
+void ASG_PlayerController::BeginSpectatingState()
+{
+    Super::BeginSpectatingState();
+
+    ServerViewNextPlayer();
+    ServerViewNextPlayer();
+}
+
 void ASG_PlayerController::OnPauseGame()
 {
     if(!GetWorld() || !GetWorld()->GetAuthGameMode())  return;

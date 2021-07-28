@@ -3,28 +3,29 @@
 
 #include "Player/SG_PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
+//#include "Camera/CameraComponent.h"
 #include "Components/WeaponComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/GameModeBase.h"
 
 ASG_PlayerCharacter::ASG_PlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
-    SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
-    SpringArmComponent->SetupAttachment(GetRootComponent());
-    SpringArmComponent->bUsePawnControlRotation = true;
-    SpringArmComponent->SocketOffset = FVector(0.f, 100.f, 80.f);
+    //SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+    //SpringArmComponent->SetupAttachment(GetRootComponent());
+    //SpringArmComponent->bUsePawnControlRotation = true;
+    //SpringArmComponent->SocketOffset = FVector(0.f, 100.f, 80.f);
 
-    CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-    CameraComponent->SetupAttachment(SpringArmComponent);
+    //CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+    //CameraComponent->SetupAttachment(SpringArmComponent);
 
-    CameraCollisionComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
-    CameraCollisionComponent->SetupAttachment(CameraComponent);
-    CameraCollisionComponent->SetSphereRadius(10.f);
-    CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    //CameraCollisionComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
+    //CameraCollisionComponent->SetupAttachment(CameraComponent);
+    //CameraCollisionComponent->SetSphereRadius(10.f);
+    //CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
 // Called to bind functionality to input
@@ -115,11 +116,11 @@ void ASG_PlayerCharacter::OnDeath()
 {
     Super::OnDeath();
 
-    if(Controller)
-    {
-        Controller->ChangeState(NAME_Spectating);
-    }
+    if(!Controller) return;      
+
+    Controller->ChangeState(NAME_Spectating);    
 }
+
 
 void ASG_PlayerCharacter::BeginPlay()
 {
@@ -129,5 +130,4 @@ void ASG_PlayerCharacter::BeginPlay()
 
     CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASG_PlayerCharacter::OnCameraCollisionBeginOverlap);
     CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASG_PlayerCharacter::OnCameraCollisionEndOverlap);
-
 }
